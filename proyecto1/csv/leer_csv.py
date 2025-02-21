@@ -22,7 +22,6 @@ leer_usuarios = "usuarios.csv"
 # except FileNotFoundError:
 #     print(f"El archivo {leer_usuarios} no existe")
 
-
 """Recuperar datos de un archivo CSV, linea a linea con import csv"""
 lista_usuarios = []
 

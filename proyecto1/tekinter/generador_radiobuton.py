@@ -4,8 +4,7 @@ ventana = Tk()
 
 
 def actualiza(value):
-    option_set = Label(ventana, text=value)
-    option_set.pack()
+    option_set.config(text=value)
 
 
 titulo = Label(ventana, text="Selecciona una opcion")
@@ -26,5 +25,10 @@ for opcion, valor in opciones:
 
 boton = Button(ventana, text="Enviar",
                command=lambda: actualiza(colores.get()))
+
 boton.pack()
+
+option_set = Label(ventana, text=colores.get())
+option_set.pack()
+
 ventana.mainloop()

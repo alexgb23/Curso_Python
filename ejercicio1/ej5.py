@@ -5,12 +5,12 @@ usando la compresion de listas y y devolvera los caracteres restantes
 
 
 def quitar_espacios(texto):
-    return "".join([i for i in texto if i != " "])
+    return "".join([i for i in texto if i != " " and i != ","])
 
 
 string = "hola mundo, este es mi string"
 sinespacios = quitar_espacios(string)
-print(sinespacios)
+print(f"El string sin espacios es: {sinespacios}")
 
 """
 contar en un diccionario, cuantas veces se repiten los caracteres
@@ -36,7 +36,7 @@ def cuenta_caracteres(sinesp):
 
 contador = cuenta_caracteres(sinespacios)
 
-print(contador)
+print(f"El diccionario es: {contador}")
 
 """
 Vamos a tener que ordenar las llaves de un diccionario por el valor 
@@ -50,12 +50,13 @@ def ordenar(dicc):
 
 
 ordenados = ordenar(contador)
-print(ordenados)
+print(f"El diccionario ordenado es: {ordenados}")
 
 """
 De un listado de tuplas, devolver aquellas que tengan el mayor valor
 (pueden ser varias con el mismo valor)
 """
+
 
 def mayores_tuplas(tup):
     # Encontrar el valor máximo en las tuplas
@@ -64,6 +65,21 @@ def mayores_tuplas(tup):
     # Filtrar y devolver las tuplas que tienen el valor máximo
     return [tupla for tupla in tup if tupla[1] == valor_maximo]
 
-mayores= mayores_tuplas(ordenados)
 
-print(mayores)
+mayores = mayores_tuplas(ordenados)
+
+print(f"Las Tuplas con Mayor valor son: {mayores}")
+
+"""
+Crea una funcion para crear un mensaje que diga los caracteres que mas se repiten
+"""
+
+
+def mensaje(mayores):
+    mensaje = "Los caracteres que más se repiten son: "
+    for tupla in mayores:
+        mensaje += f"{tupla[0]} ({tupla[1]} veces), "
+    return mensaje[:-2]  # Eliminar la última coma y espacio
+
+
+print(mensaje(mayores))

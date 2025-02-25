@@ -13,7 +13,6 @@ config = {
     "database": "app"
 }
 
-
 """
 para el primer import se debe instalar el paquete mysql-connector-python
 pip install mysql-connector-python

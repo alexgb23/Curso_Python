@@ -65,6 +65,23 @@ class Database:
         consulta = f"SELECT * FROM {self.tabla}"
         return self.ejecutar_consulta(consulta, fetch=True)
 
+    def listar_libros(self):
+        """
+        Obtiene todos los registros de la tabla libros, con nombre completo del autor y el nombre de la editorial.
+        """
+        consulta = """
+        SELECT libros.id, libros.titulo, CONCAT(autores.nombre, ' ', autores.apellido) AS autor_completo, editoriales.nombre AS editorial
+        FROM libros
+        INNER JOIN autor_libro ON libros.id = autor_libro.id_libro
+        INNER JOIN autores ON autor_libro.id_autor = autores.id
+        INNER JOIN editoriales ON libros.id_editorial = editoriales.id
+        """
+        return self.ejecutar_consulta(consulta, fetch=True)
+
+
+
+  
+
     def buscar_por_id(self, id):
         """
         Busca un registro por ID.

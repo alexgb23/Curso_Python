@@ -57,8 +57,12 @@ class App:
         ttk.Label(self.frame_gestion,
                   text=f"📋 Gestión de {tabla}", font=("Arial", 14)).pack()
 
+        
         # 🔹 Cargar registros
-        self.cargar_registros()
+        if tabla=="libros":
+            self.cargar_registros_libros()
+        else:
+            self.cargar_registros()
 
         if not self.registros:
             messagebox.showerror(
@@ -78,12 +82,14 @@ class App:
             frame_fila.pack(pady=5, fill="x")
             if columna.lower() != "id":
                 col = columna
-                print(col)
 
                 ttk.Label(frame_fila, text=col, width=15,
                           anchor="w").pack(side="left", padx=5)
+             
                 self.campos[col] = ttk.Entry(frame_fila)
                 self.campos[col].pack(side="left", expand=True, fill="x")
+                print (frame_fila)
+
 
         self.mostrar_registro()
 
@@ -107,16 +113,23 @@ class App:
         self.registros = self.db.listar_todos()
         self.indice_actual = 0
 
+    def cargar_registros_libros(self):
+        """ Carga los registros en memoria """
+        self.registros = self.db.listar_libros()
+        self.indice_actual = 0
+
     def mostrar_registro(self):
         """ Muestra el registro actual en los campos de texto """
         if not self.registros:
             return
-
+        
         registro_actual = self.registros[self.indice_actual]
-
+       
         for columna, campo in self.campos.items():
             campo.delete(0, tk.END)
             campo.insert(0, registro_actual[columna])
+            
+
 
     def siguiente_registro(self):
         """ Muestra el siguiente registro """

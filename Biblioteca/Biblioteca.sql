@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mysql_db
--- Tiempo de generación: 28-02-2025 a las 11:50:03
+-- Tiempo de generación: 01-03-2025 a las 23:38:44
 -- Versión del servidor: 8.0.40
 -- Versión de PHP: 8.2.8
 
@@ -30,24 +30,25 @@ SET time_zone = "+00:00";
 CREATE TABLE `autores` (
   `id` int NOT NULL,
   `nombre` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `apellido` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL
+  `apellido` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `nacionalidad` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `autores`
 --
 
-INSERT INTO `autores` (`id`, `nombre`, `apellido`) VALUES
-(1, 'Gabriel', 'García Márquez'),
-(2, 'Isabel', 'Allende'),
-(3, 'J.K.', 'Rowling'),
-(4, 'George', 'Orwell'),
-(5, 'Mario', 'Vargas Llosa'),
-(6, 'Julio', 'Cortázar'),
-(7, 'Haruki', 'Murakami'),
-(8, 'Jane', 'Austen'),
-(9, 'Mark', 'Twain'),
-(10, 'Virginia', 'Woolf');
+INSERT INTO `autores` (`id`, `nombre`, `apellido`, `nacionalidad`) VALUES
+(1, 'Gabriel', 'García Márquez', 'Colombiana'),
+(2, 'Isabel', 'Allende', 'Chilena'),
+(3, 'J.K.', 'Rowling', 'Británica'),
+(4, 'George', 'Orwell', 'Británica'),
+(5, 'Mario', 'Vargas Llosa', 'Peruana'),
+(6, 'Julio', 'Cortázar', 'Argentino'),
+(7, 'Haruki', 'Murakami', 'Japonesa'),
+(8, 'Jane', 'Austen', 'Británica'),
+(9, 'Mark', 'Twain', 'Americana'),
+(10, 'Virginia', 'Woolf', 'Británica');
 
 -- --------------------------------------------------------
 
@@ -112,24 +113,25 @@ INSERT INTO `editoriales` (`id`, `nombre`) VALUES
 CREATE TABLE `libros` (
   `id` int NOT NULL,
   `titulo` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `id_editorial` int DEFAULT NULL
+  `id_editorial` int DEFAULT NULL,
+  `anio` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `libros`
 --
 
-INSERT INTO `libros` (`id`, `titulo`, `id_editorial`) VALUES
-(1, 'Cien años de soledad', 1),
-(2, 'La casa de los espíritus', 2),
-(3, 'Harry Potter y la piedra filosofal', 3),
-(4, '1984', 4),
-(5, 'La ciudad y los perros', 5),
-(6, 'Rayuela', 6),
-(7, 'Kafka en la orilla', 7),
-(8, 'Orgullo y prejuicio', 8),
-(9, 'Las aventuras de Tom Sawyer', 9),
-(10, 'Al faro', 10);
+INSERT INTO `libros` (`id`, `titulo`, `id_editorial`, `anio`) VALUES
+(1, 'Cien años de soledad', 1, '1967-01-01'),
+(2, 'La casa de los espíritus', 2, '1982-01-01'),
+(3, 'Harry Potter y la piedra filosofal', 3, '1997-01-01'),
+(4, '1984', 4, '1949-01-01'),
+(5, 'La ciudad y los perros', 5, '1963-01-01'),
+(6, 'Rayuela', 6, '1963-01-01'),
+(7, 'Kafka en la orilla', 7, '2002-01-01'),
+(8, 'Orgullo y prejuicio', 8, '1813-01-01'),
+(9, 'Las aventuras de Tom Sawyer', 9, '1876-01-01'),
+(10, 'Al faro', 10, '1927-01-01');
 
 --
 -- Índices para tablas volcadas

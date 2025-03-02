@@ -1,4 +1,4 @@
-from baseorm import BaseORM
+from clases.baseorm import BaseORM
 
 class Autores(BaseORM):
     tabla = "autores"

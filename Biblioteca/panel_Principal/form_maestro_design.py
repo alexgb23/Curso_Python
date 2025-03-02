@@ -1,18 +1,18 @@
 import tkinter as tk
 from tkinter import font
-from config import COLOR_BARRA_SUPERIOR, COLOR_MENU_LATERAL, COLOR_CUERPO_PRINCIPAL, COLOR_MENU_CURSOR_ENCIMA, COLOR_BTN
+from config.config import COLOR_BARRA_SUPERIOR, COLOR_MENU_LATERAL, COLOR_CUERPO_PRINCIPAL, COLOR_MENU_CURSOR_ENCIMA, COLOR_BTN
 import util.util_ventana as util_ventana
 import util.util_imagenes as util_img
-from libros import Libros
-from autores import Autores
-from editoriales import Editoriales
-from autorlibro import AutorLibro
-from install import check_and_install_pillow
+from clases.libros import Libros
+from clases.autores import Autores
+from clases.editoriales import Editoriales
+from clases.autorlibro import AutorLibro
+
+
 
 class FormMaestro(tk.Tk):
     def __init__(self):
         super().__init__()
-        check_and_install_pillow()
         try:
             self.perfil = util_img.leer_imagen("image/eDe-Lib.png", (250, 250))
         except FileNotFoundError as e:
@@ -20,12 +20,16 @@ class FormMaestro(tk.Tk):
         
         self.boton_activo = None  # Botón activo
         self.boton_activo_sup = None
+        self.registros = []
+        self.indice_actual = 0
+        self.registros = None
         self.titulo="Bienvenido a eDe-Lib"
         self.config_window()
         self.paneles()
+        self.panelInicio()
         self.controles_barra_superior()
         self.controles_menu_lateral()
-        self.form()
+
     
     def config_window(self):
         self.title("eDe-Lib")
@@ -43,6 +47,9 @@ class FormMaestro(tk.Tk):
 
         self.cuerpo_principal = tk.Frame(self, bg=COLOR_CUERPO_PRINCIPAL)
         self.cuerpo_principal.pack(side=tk.RIGHT, fill="both", expand=True)
+
+        self.panel_datos = tk.Frame(self.cuerpo_principal, bg=COLOR_CUERPO_PRINCIPAL)
+        self.panel_datos.pack(side=tk.TOP, fill="both", expand=True)
 
     def controles_barra_superior(self):
         ancho_op = 15
@@ -149,7 +156,7 @@ class FormMaestro(tk.Tk):
         else:
             self.boton_activo = boton
 
-    def form(self):
+    def panelInicio(self):
         label_cuerpo = tk.Label(self.cuerpo_principal, text=self.titulo, bg=COLOR_CUERPO_PRINCIPAL, fg="red", font=("Arial", 36, "bold"))
         label_cuerpo.place(x=0, y=150, relwidth=1, relheight=0.1)
 
@@ -219,18 +226,28 @@ class FormMaestro(tk.Tk):
     def instanciar(self, clase):
         if clase == "Libros":
             libros=Libros()
-            print(libros.libros_con_autor_y_editorial)
+            self.registros = libros.libros_con_autor_y_editorial
+            self.indice_actual = 0
+            self.cargarDatos()
         elif clase == "Autores":
             autores=Autores()
-            autores.listar_autores
-            print(autores.autores)
+            self.registros = autores.autores
+            self.indice_actual = 0
+            self.cargarDatos()
         elif clase == "Editoriales":
             editoriales=Editoriales()
-            editoriales.listar_editoriales
-            print(editoriales.editoriales)
+            self.registros = editoriales.editoriales
+            self.indice_actual = 0
+            self.cargarDatos()
         elif clase == "Autor-Libro":
             autorlibro=AutorLibro()
-            print(autorlibro.autorlibrocompleto)
+            self.registros = autorlibro.autorlibro
+            self.indice_actual = 0
+            self.cargarDatos()
+        elif clase == "Inicio":
+            self.cargarDatos("Inicio")
+        else:
+            print("No se encontró la clase")
     
     def toogle(self):
         if self.panel_cuerpo.winfo_ismapped():
@@ -239,6 +256,65 @@ class FormMaestro(tk.Tk):
             self.panel_cuerpo.pack(side=tk.TOP, fill="x")
 
 
-if __name__ == "__main__":
-    app = FormMaestro()
-    app.mainloop()
+    def cargarDatos(self, quepanel=None):
+        self.panel_datos.destroy()
+        self.panel_cuerpo.destroy()
+        if quepanel == "Inicio":
+            self.panelInicio()
+        else:
+            self.panel_datos = tk.Frame(self.cuerpo_principal, bg=COLOR_CUERPO_PRINCIPAL)
+            self.panel_datos.pack(side=tk.TOP, fill="both", expand=True)
+
+            self.campos = {}
+            self.columnas = list(self.registros[0].keys())
+
+            for columna in self.columnas:
+                # Contenedor de cada fila (etiqueta + campo)
+                frame_fila = tk.Frame(self.panel_datos)
+                frame_fila.pack(pady=5, fill="x")
+                if columna.lower() != "id":
+                    col = columna
+
+                    tk.Label(frame_fila, text=col, width=15,
+                              anchor="w").pack(side="left", padx=5)
+
+                    self.campos[col] = tk.Entry(frame_fila)
+                    self.campos[col].pack(side="left", expand=True, fill="x")
+                    print (frame_fila)
+
+
+            self.mostrar_registro()
+
+            btnMenos= tk.Button(self.panel_datos, text="Anterior", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
+                command=self.anterior_registro)
+            btnMenos.pack(side="left", padx=20)
+            self.hover_event(btnMenos)
+
+            btnMas=tk.Button(self.panel_datos, text="Siguiente", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
+                command=self.siguiente_registro)
+            btnMas.pack(side="left", padx=20)
+            self.hover_event(btnMas)
+
+
+    def mostrar_registro(self):
+        """ Muestra el registro actual en los campos de texto """
+        if not self.registros:
+            return
+        
+        registro_actual = self.registros[self.indice_actual]
+    
+        for columna, campo in self.campos.items():
+            campo.delete(0, tk.END)
+            campo.insert(0, registro_actual[columna])
+
+    def siguiente_registro(self):
+        """ Muestra el siguiente registro """
+        if self.indice_actual < len(self.registros) - 1:
+            self.indice_actual += 1
+            self.mostrar_registro()
+
+    def anterior_registro(self):
+        """ Muestra el registro anterior """
+        if self.indice_actual > 0:
+            self.indice_actual -= 1
+            self.mostrar_registro()

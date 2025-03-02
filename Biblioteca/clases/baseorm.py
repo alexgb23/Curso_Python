@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from DataBase import Database
+from clases.DataBase import Database
 
 class BaseORM (ABC):
     @property

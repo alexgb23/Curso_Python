@@ -1,0 +1,35 @@
+ def creacion_cuerpo_datos(self):
+        self.panel_datos = tk.Frame(self.cuerpo_principal, bg=COLOR_CUERPO_PRINCIPAL)
+        self.panel_datos.place(relwidth=1, relheight=1)  # Usando place para ocupar todo el espacio
+
+        # Definir dimensiones del panel_cuerpo
+        self.ancho_cuerpo = 600
+        self.alto_cuerpo = 250
+
+        # Crear el panel cuerpo dentro de panel_datos
+        self.panel_cuerpo = tk.Frame(self.panel_datos, bg=COLOR_PANEL_INFO)
+
+        # Vincular el evento de configuración
+        self.panel_datos.bind("<Configure>", lambda event: self.ajustar_panel(self.panel_cuerpo, 100))
+
+        # Etiqueta para el título
+        tk.Label(self.panel_datos, text=f"Panel de Administración de {self.titulo_panel_administracion}", 
+                bg=COLOR_CUERPO_PRINCIPAL, fg=COLOR_BARRA_SUPERIOR, font=("Arial", 30, "bold")).place(relx=0.5, y=10, anchor="n")
+
+        # Crear panel para la tabla
+        self.panel_tabla = tk.Frame(self.panel_datos, bg="#FFFFFF")
+        self.panel_tabla.place(relwidth=1, relheight=0.25, y=400)  # Ajusta la posición según sea necesario
+
+    def creacion_acciones_cuerpo_datos(self):
+        # Crear el panel acciones dentro de panel_datos
+        self.panel_acciones_cuerpo = tk.Frame(self.panel_datos, bg=COLOR_PANEL_INFO)
+        
+        # Usar la función ajustar_panel para centrar el panel_acciones_cuerpo
+        self.panel_datos.bind("<Configure>", lambda event: self.ajustar_panel(self.panel_acciones_cuerpo, 400))
+
+    def ajustar_panel(self, panel, y_offset):
+        # Obtener posiciones centradas
+        x = (self.panel_datos.winfo_width() - self.ancho_cuerpo) // 2
+        
+        # Coloca el panel centrado
+        panel.place(width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=y_offset)

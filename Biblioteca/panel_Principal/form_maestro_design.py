@@ -30,7 +30,6 @@ class FormMaestro(tk.Tk):
         self.titulo="Bienvenido a eDe-Lib"
         self.config_window()
         self.paneles()
-        self.panelInicio()
         self.controles_barra_superior()
         self.controles_menu_lateral()
 
@@ -52,8 +51,17 @@ class FormMaestro(tk.Tk):
         self.cuerpo_principal = tk.Frame(self, bg=COLOR_CUERPO_PRINCIPAL)
         self.cuerpo_principal.pack(side=tk.RIGHT, fill="both", expand=True)
 
-        self.panel_datos = tk.Frame(self.cuerpo_principal, bg=COLOR_CUERPO_PRINCIPAL)
-        self.panel_datos.pack(side=tk.TOP, fill="both", expand=True)
+        self.crear_panel_inicio()
+
+
+    def crear_panel_inicio(self):
+        self.panel_inicio = tk.Frame(self.cuerpo_principal, bg="white", width=100, height=100)
+        self.panel_inicio.place(relwidth=1, relheight=1)
+
+        self.label_inicio = tk.Label(self.panel_inicio, text=self.titulo, bg="gray", fg=COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 36, "bold"))
+        self.label_inicio.place(relx=0.5, y=10, anchor="n" )
+
+
 
     def controles_barra_superior(self):
         ancho_op = 15
@@ -83,6 +91,8 @@ class FormMaestro(tk.Tk):
             self.slide_in(self.panel_cuerpo)
         elif btn_info_sup["text"] == "Actualizar":
             self.slide_out(self.panel_cuerpo)
+            self.creacion_acciones_cuerpo_datos()
+            self.slide_in(self.panel_acciones_cuerpo)
             if self.titulo_panel_administracion == "Libros":
                 print(self.item_values_selected_tabla)
             elif self.titulo_panel_administracion == "Autores":
@@ -168,13 +178,6 @@ class FormMaestro(tk.Tk):
             self.hover_event(boton)
         else:
             self.boton_activo = boton
-
-    def panelInicio(self):
-        label_cuerpo = tk.Label(self.cuerpo_principal, text=self.titulo, bg=COLOR_CUERPO_PRINCIPAL, fg="red", font=("Arial", 36, "bold"))
-        label_cuerpo.place(x=0, y=150, relwidth=1, relheight=0.1)
-
-        self.panel_cuerpo = tk.Frame(self.cuerpo_principal, bg="gray", width=100, height=100)
-        self.panel_cuerpo.pack(side=tk.TOP, fill="both", expand=False)
 
 
     def marcar_boton(self, boton, btn_info):
@@ -366,14 +369,12 @@ class FormMaestro(tk.Tk):
 
 
 
-
-
     def cargarDatos(self, quepanel=None):
-        self.panel_datos.destroy()
-        self.panel_cuerpo.destroy()
         if quepanel == "Inicio":
-            self.panelInicio()
+            self.panel_datos.pack_forget()
+            self.crear_panel_inicio()
         else:
+            self.panel_inicio.pack_forget()
             self.creacion_cuerpo_datos()
 
             self.campos = {}
@@ -445,7 +446,6 @@ class FormMaestro(tk.Tk):
         def ajustar_panel():
             # Obtener posiciones centradas
             x, y = util_ventana.centrar_panel(self.panel_datos, ancho_cuerpo, alto_cuerpo)
-            print(x, y)
             
             # Coloca el panel_cuerpo centrado
             self.panel_cuerpo.place(width=ancho_cuerpo, height=alto_cuerpo, x=x, y=100)
@@ -462,6 +462,18 @@ class FormMaestro(tk.Tk):
         self.panel_tabla = tk.Frame(self.panel_datos, bg="#FFFFFF")
         self.panel_tabla.place(relwidth=1, relheight=0.25, y=400)  # Ajusta la posición según sea necesario
        
+
+    def creacion_acciones_cuerpo_datos(self):
+        # Definir dimensiones del panel_cuerpo
+        ancho_cuerpo = 600
+        alto_cuerpo = 250
+
+        # Crear el panel cuerpo dentro de panel_datos
+        self.panel_acciones_cuerpo = tk.Frame(self.panel_datos, bg=COLOR_PANEL_INFO)
+        self.panel_acciones_cuerpo.place(width=ancho_cuerpo, height=alto_cuerpo, relx=0.5, y=100)
+
+
+        
 
 
 

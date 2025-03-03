@@ -26,18 +26,30 @@ Crear un array de 1 millon de valores
 Usar una funcion de tiempo para calcular lavelocidad de calculo
 """
 
-n=10**6
+# n=10**6
 
-lista=list(range(n))
-array=np.arange(n)
+# lista=list(range(n))
+# array=np.arange(n)
 
-inicio=time.time()
-lista2=[x*2 for x in lista]
-end=time.time()
-print(f"Tiempo con listas:{end-inicio:.5f} segundos")
+# inicio=time.time()
+# lista2=[x*2 for x in lista]
+# end=time.time()
+# print(f"Tiempo con listas:{end-inicio:.5f} segundos")
 
-array2=array*2
-inicio=time.time()
-array2*=2
-end=time.time()
-print(f"Tiempo con arrays:{end-inicio:.5f} segundos")
+# array2=array*2
+# inicio=time.time()
+# array2*=2
+# end=time.time()
+# print(f"Tiempo con arrays:{end-inicio:.5f} segundos")
+
+
+"""Creacion de vector"""
+
+vector=np.array([1,2,3,4,5])
+print(vector.shape)
+
+matriz=np.array([[1,2,3],[4,5,6]])
+print(matriz.shape)
+
+tensor=np.array([[[1,2,3],[4,5,6]],[[7,8,9],[10,11,12]]])
+print(tensor.shape)

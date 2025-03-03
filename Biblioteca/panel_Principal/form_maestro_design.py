@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk 
 from tkinter import font
-from config.config import * 
+from config.config import COLOR_BARRA_SUPERIOR, COLOR_MENU_LATERAL, COLOR_CUERPO_PRINCIPAL, COLOR_MENU_CURSOR_ENCIMA, COLOR_PANEL_INFO, COLOR_CABECERA_TABLA, COLOR_BTN
 import util.util_ventana as util_ventana
 import util.util_imagenes as util_img
 from clases.libros import Libros

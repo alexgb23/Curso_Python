@@ -1,6 +1,7 @@
 import tkinter as tk
+from tkinter import ttk 
 from tkinter import font
-from config.config import COLOR_BARRA_SUPERIOR, COLOR_MENU_LATERAL, COLOR_CUERPO_PRINCIPAL, COLOR_MENU_CURSOR_ENCIMA, COLOR_BTN
+from config.config import * 
 import util.util_ventana as util_ventana
 import util.util_imagenes as util_img
 from clases.libros import Libros
@@ -21,8 +22,11 @@ class FormMaestro(tk.Tk):
         self.boton_activo = None  # Botón activo
         self.boton_activo_sup = None
         self.registros = []
+        self.ventanas = {}
         self.indice_actual = 0
         self.registros = None
+        self.visible = True  # Estado del panel
+        self.titulo_panel_administracion = None
         self.titulo="Bienvenido a eDe-Lib"
         self.config_window()
         self.paneles()
@@ -75,10 +79,20 @@ class FormMaestro(tk.Tk):
             self.hover_event_sup(but)
 
     def acciones(self, buton, btn_info_sup):
-        self.marcar_boton_sup(buton, btn_info_sup)
         if btn_info_sup["text"] == "Prueba":
-            print(btn_info_sup["text"])
-            self.toogle()
+            self.slide_in(self.panel_cuerpo)
+        elif btn_info_sup["text"] == "Actualizar":
+            self.slide_out(self.panel_cuerpo)
+            if self.titulo_panel_administracion == "Libros":
+                print(self.item_values_selected_tabla)
+            elif self.titulo_panel_administracion == "Autores":
+                print(self.item_values_selected_tabla)
+            elif self.titulo_panel_administracion == "Editoriales":
+                print(self.item_values_selected_tabla)
+            elif self.titulo_panel_administracion == "Autor-Libro":
+                print(self.item_values_selected_tabla)
+        
+        
 
         
 
@@ -121,7 +135,6 @@ class FormMaestro(tk.Tk):
             {"text": "Autor-Libro", "icon": "\uf0f6", "activo": False},
         ]
         
-     
 
                 
         for btn in self.btn_info:
@@ -178,7 +191,7 @@ class FormMaestro(tk.Tk):
         self.boton_activo = boton  # Actualiza el botón activo
         # Actualiza el estado del botón actual
         btn_info["activo"] = True
-        print(boton, btn_info)
+       
 
     def marcar_boton_sup(self, buton, btn_info_sup):
         # Si hay un botón activo, restaurar su color
@@ -225,35 +238,134 @@ class FormMaestro(tk.Tk):
 
     def instanciar(self, clase):
         if clase == "Libros":
-            libros=Libros()
-            self.registros = libros.libros_con_autor_y_editorial
-            self.indice_actual = 0
-            self.cargarDatos()
+            try:
+                libros=Libros()
+                self.registros = libros.libros
+                self.indice_actual = 0
+                self.titulo_panel_administracion="Libros"
+                self.cargarDatos()
+            except Exception as e:
+                print(f"Error al instanciar libros: {e}")           
         elif clase == "Autores":
-            autores=Autores()
-            self.registros = autores.autores
-            self.indice_actual = 0
-            self.cargarDatos()
+            try:
+                autores=Autores()
+                self.registros = autores.autores
+                self.indice_actual = 0
+                self.titulo_panel_administracion="Autores"
+                self.cargarDatos()
+            except Exception as e:
+                print(f"Error al instanciar autores: {e}")
         elif clase == "Editoriales":
-            editoriales=Editoriales()
-            self.registros = editoriales.editoriales
-            self.indice_actual = 0
-            self.cargarDatos()
+            try:
+                editoriales=Editoriales()
+                self.registros = editoriales.editoriales
+                self.indice_actual = 0
+                self.titulo_panel_administracion="Editoriales"
+                self.cargarDatos()
+            except Exception as e:
+                print(f"Error al instanciar editoriales: {e}")
         elif clase == "Autor-Libro":
-            autorlibro=AutorLibro()
-            self.registros = autorlibro.autorlibro
-            self.indice_actual = 0
-            self.cargarDatos()
+            try:
+                autorlibro=AutorLibro()
+                self.registros = autorlibro.autorlibrocompleto
+                self.indice_actual = 0
+                self.titulo_panel_administracion="Autor-Libro"
+                self.cargarDatos()
+            except Exception as e:
+                print(f"Error al instanciar autorlibro: {e}")
         elif clase == "Inicio":
             self.cargarDatos("Inicio")
         else:
             print("No se encontró la clase")
     
-    def toogle(self):
-        if self.panel_cuerpo.winfo_ismapped():
-            self.panel_cuerpo.pack_forget()
-        else:
-            self.panel_cuerpo.pack(side=tk.TOP, fill="x")
+
+
+    """Accion para mostrar y ocultar ventana"""
+    # def toggle(self, ventana):
+    #     if self.ventanas.get(ventana) is None:
+    #         # Guardar información detallada
+    #         self.ventanas[ventana] = self.get_window_details(ventana)
+
+    #     if self.visible:
+    #         self.slide_out(ventana)
+    #     else:
+    #         self.slide_in(ventana)
+
+    def slide_out(self, ventana):
+        # Guardar información detallada si no se ha hecho ya
+        if self.ventanas.get(ventana) is None:
+            self.ventanas[ventana] = self.get_window_details(ventana)
+            print(self.ventanas[ventana])
+
+        # Función para mover la ventana hacia arriba
+        def mover_ventana(i):
+            if i <= 200:  # Continuar hasta que haya deslizado completamente
+                ventana.place(x=ventana.winfo_x(), y=ventana.winfo_y() - i)  # Mover hacia arriba
+                self.update_idletasks()
+                self.after(10, mover_ventana, i + 5)  # Llama a sí mismo con el nuevo valor
+            else:
+                ventana.place_forget()  # Ocultar la ventana al final del movimiento
+                self.visible = False
+
+        # Iniciar el movimiento
+        mover_ventana(0)
+
+
+    def slide_in(self, ventana):
+        detalles = self.ventanas[ventana]
+        original_x = detalles['x']
+        original_y = detalles['y']
+        original_width = detalles['width']
+        original_height = detalles['height']
+
+        # Desactivar el ajuste automático de tamaño
+        ventana.update_idletasks()  # Asegúrate de que el tamaño se calcule correctamente
+
+        # Coloca la ventana fuera de la vista inicialmente
+        ventana.place(x=original_x, y=original_y - original_height, width=original_width)
+
+        # Función para mover la ventana hacia abajo
+        def mover_ventana(i):
+            if i <= original_height:
+                ventana.place(x=original_x, y=original_y - original_height + i, width=original_width)
+                self.update_idletasks()
+                self.after(10, mover_ventana, i + 5)
+            else:
+                # Asegúrate de que esté en la posición original al final
+                ventana.place(x=original_x, y=original_y, width=original_width, height=original_height)
+
+        mover_ventana(0)
+        self.visible = True
+
+
+
+
+
+    def get_window_details(self, ventana):
+        # Obtener las coordenadas, tamaño y nombre de la ventana
+        x = ventana.winfo_x()
+        y = ventana.winfo_y()
+        width = ventana.winfo_width()
+        height = ventana.winfo_height()
+        name = ventana.__class__.__name__  # Esto obtendrá el nombre de la clase del panel
+
+        return {
+            'x': x,
+            'y': y,
+            'width': width,
+            'height': height,
+            'name': name
+        }
+
+    def grid_info(self, ventana):
+        # Devuelve información del grid
+        return {
+            'row': ventana.grid_info().get('row', None),
+            'column': ventana.grid_info().get('column', None)
+        }
+
+
+
 
 
     def cargarDatos(self, quepanel=None):
@@ -262,39 +374,38 @@ class FormMaestro(tk.Tk):
         if quepanel == "Inicio":
             self.panelInicio()
         else:
-            self.panel_datos = tk.Frame(self.cuerpo_principal, bg=COLOR_CUERPO_PRINCIPAL)
-            self.panel_datos.pack(side=tk.TOP, fill="both", expand=True)
+            self.creacion_cuerpo_datos()
 
             self.campos = {}
             self.columnas = list(self.registros[0].keys())
 
             for columna in self.columnas:
                 # Contenedor de cada fila (etiqueta + campo)
-                frame_fila = tk.Frame(self.panel_datos)
-                frame_fila.pack(pady=5, fill="x")
+                frame_fila = tk.Frame(self.panel_cuerpo, bg=COLOR_PANEL_INFO)
+                frame_fila.pack(pady=10, fill="x")
                 if columna.lower() != "id":
                     col = columna
 
                     tk.Label(frame_fila, text=col, width=15,
-                              anchor="w").pack(side="left", padx=5)
+                              anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
 
-                    self.campos[col] = tk.Entry(frame_fila)
-                    self.campos[col].pack(side="left", expand=True, fill="x")
-                    print (frame_fila)
+                    self.campos[col] = tk.Entry(frame_fila , font=("Arial", 14, "bold"))
+                    self.campos[col].pack(side="left", expand=True, fill="x", padx=15)
 
 
             self.mostrar_registro()
 
-            btnMenos= tk.Button(self.panel_datos, text="Anterior", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
-                command=self.anterior_registro)
-            btnMenos.pack(side="left", padx=20)
-            self.hover_event(btnMenos)
-
-            btnMas=tk.Button(self.panel_datos, text="Siguiente", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
+            btnMas=tk.Button(self.panel_cuerpo, text="Siguiente", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
                 command=self.siguiente_registro)
-            btnMas.pack(side="left", padx=20)
+            btnMas.pack(side="right", padx=20)
             self.hover_event(btnMas)
 
+            btnMenos= tk.Button(self.panel_cuerpo, text="Anterior", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
+                command=self.anterior_registro)
+            btnMenos.pack(side="right", padx=20)
+            self.hover_event(btnMenos)
+
+            self.crear_tabla()
 
     def mostrar_registro(self):
         """ Muestra el registro actual en los campos de texto """
@@ -318,3 +429,93 @@ class FormMaestro(tk.Tk):
         if self.indice_actual > 0:
             self.indice_actual -= 1
             self.mostrar_registro()
+
+    def creacion_cuerpo_datos(self):
+        self.panel_datos = tk.Frame(self.cuerpo_principal, bg=COLOR_CUERPO_PRINCIPAL)
+        self.panel_datos.place(relwidth=1, relheight=1)  # Usando place para ocupar todo el espacio
+
+        # Definir dimensiones del panel_cuerpo
+        ancho_cuerpo = 600
+        alto_cuerpo = 250
+
+        # Crear el panel cuerpo dentro de panel_datos
+        self.panel_cuerpo = tk.Frame(self.panel_datos, bg=COLOR_PANEL_INFO)
+
+        # Función para centrar el panel_cuerpo
+        def ajustar_panel():
+            # Obtener posiciones centradas
+            x, y = util_ventana.centrar_panel(self.panel_datos, ancho_cuerpo, alto_cuerpo)
+            print(x, y)
+            
+            # Coloca el panel_cuerpo centrado
+            self.panel_cuerpo.place(width=ancho_cuerpo, height=alto_cuerpo, x=x, y=100)
+          
+
+        # Vincular el evento de configuración
+        self.panel_datos.bind("<Configure>", lambda event: ajustar_panel())
+
+        # Etiqueta para el título
+        tk.Label(self.panel_datos, text=f"Panel de Administración de {self.titulo_panel_administracion}", 
+                bg=COLOR_CUERPO_PRINCIPAL, fg=COLOR_BARRA_SUPERIOR, font=("Arial", 30, "bold")).place(relx=0.5, y=10, anchor="n")
+
+        # Crear panel para la tabla
+        self.panel_tabla = tk.Frame(self.panel_datos, bg="#FFFFFF")
+        self.panel_tabla.place(relwidth=1, relheight=0.25, y=400)  # Ajusta la posición según sea necesario
+       
+
+
+
+
+    # Crear la tabla
+    def crear_tabla(self):
+        # Asegúrate de que self.registros no esté vacío
+        if not self.registros:
+            print("No hay registros para mostrar.")
+            return
+
+        # Obtener las columnas de los registros
+        self.columnas = list(self.registros[0].keys())
+
+        # Crear un estilo para la tabla
+        style = ttk.Style()
+        style.configure("Heading", background=COLOR_CABECERA_TABLA)
+        style.configure("Treeview.Heading", font=("Arial", 14, "bold"))  # Cabeceras en 14 bold
+        style.configure("Treeview", font=("Arial", 12), background=COLOR_PANEL_INFO)  # Contenido en 12
+
+        # Crear la tabla
+        self.tabla = ttk.Treeview(self.panel_tabla, columns=self.columnas, show="headings", style="Treeview")
+        
+        # Configurar las cabeceras de la tabla
+        for col in self.columnas:
+            self.tabla.heading(col, text=col)
+            self.tabla.column(col, width=200)
+
+        # Insertar los datos en la tabla
+        for registro in self.registros:
+            self.tabla.insert("", "end", values=[registro[col] for col in self.columnas])
+
+        # Opcional: Agregar una barra de desplazamiento
+        scrollbar = tk.Scrollbar(self.panel_tabla, orient="vertical", command=self.tabla.yview)
+        self.tabla.configure(yscroll=scrollbar.set)
+
+        # Usar grid para la tabla y el scrollbar
+        self.tabla.grid(row=0, column=0, columnspan=4, sticky="nsew")
+        scrollbar.grid(row=0, column=1, sticky="ns")
+
+        # Configurar la expansión del grid
+        self.panel_tabla.grid_rowconfigure(0, weight=1)
+        self.panel_tabla.grid_columnconfigure(0, weight=1)
+
+        # Asociar el evento de clic a la tabla
+        self.tabla.bind("<ButtonRelease-1>", self.on_item_tabla_click)
+
+
+    def on_item_tabla_click(self, event):
+        # Obtener el item seleccionado
+        item = self.tabla.selection()
+        if item:
+            # Obtener los valores del item seleccionado
+            self.item_values_selected_tabla = self.tabla.item(item, "values")
+
+            
+

@@ -7,6 +7,7 @@ class Editoriales(BaseORM):
         super().__init__()
         self.editoriales = super().listar_todos()  
 
+
     def listar_editoriales(self):
         for editorial in self.editoriales:
             id = editorial.get('id')  

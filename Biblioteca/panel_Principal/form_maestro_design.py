@@ -5,11 +5,14 @@ from config.config import COLOR_BARRA_SUPERIOR, COLOR_MENU_LATERAL, COLOR_CUERPO
 import util.util_ventana as util_ventana
 import util.util_imagenes as util_img
 from metodos_basicos.metodos_basicos import *
+from clases.editoriales import Editoriales
+from clases.autores import Autores
+
 
 class FormMaestro(tk.Tk):
     def __init__(self):
         super().__init__()
-        
+
         try:
             self.perfil = util_img.leer_imagen("image/eDe-Lib.png", (250, 250))
         except FileNotFoundError as e:
@@ -77,9 +80,8 @@ class FormMaestro(tk.Tk):
             self.configurar_btn_superior(
                 but, btn["text"], btn["icon"], font_awesome, ancho_op, alto_op, btn["activo"])
             but.config(command=lambda b=but, btn=btn: acciones(
-                self,b, btn))  # Asigna el comando
-            hover_event_sup(self,but)
-
+                self, b, btn))  # Asigna el comando
+            hover_event_sup(self, but)
 
     def configurar_btn_superior(self, boton, text, icono, font_awesome, ancho_op, alto_op, activo):
         boton.config(
@@ -124,11 +126,11 @@ class FormMaestro(tk.Tk):
             self.configurar_btn_menu(
                 boton, btn["text"], btn["icon"], font_awesome, ancho_menu, alto_menu, btn["activo"])
             boton.config(command=lambda b=boton,
-                         btn=btn:  instanciar_y_marcar(self,b, btn))
+                         btn=btn:  instanciar_y_marcar(self, b, btn))
 
     def instanciar_y_marcar(self, boton, btn_info):
         # Llama a los métodos deseados
-        marcar_boton(self,boton, btn_info)  # Marca el botón
+        marcar_boton(self, boton, btn_info)  # Marca el botón
         self.instanciar(btn_info["text"])   # Llama a instanciar
 
     def configurar_btn_menu(self, boton, text, icono, font_awesome, ancho_menu, alto_menu, activo):
@@ -149,10 +151,9 @@ class FormMaestro(tk.Tk):
         )
         boton.pack(side=tk.TOP, pady=8)
         if not activo:
-            hover_event(self,boton)
+            hover_event(self, boton)
         else:
             self.boton_activo = boton
-
 
     def get_window_details(self, ventana, position=0):
         # Obtener las coordenadas, tamaño y nombre de la ventana
@@ -195,26 +196,23 @@ class FormMaestro(tk.Tk):
                 tk.Label(frame_fila, text=columna, width=15,
                          anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
 
-                self.campos[columna] = tk.Entry(
+                self.campos[columna] = ttk.Entry(
                     frame_fila, font=("Arial", 14, "bold"))
+
                 self.campos[columna].pack(
                     side="left", expand=True, fill="x", padx=15)
-
-                if self.campos[columna].lower() == "id":
-                    self.campos[columna].config(state="disabled")
-
-            self.mostrar_registro()
 
             btnMas = tk.Button(self.panel_cuerpo, text="Siguiente", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
                                command=self.siguiente_registro)
             btnMas.pack(side="right", padx=20)
-            hover_event_sup(self,btnMas)
+            hover_event_sup(self, btnMas)
 
             btnMenos = tk.Button(self.panel_cuerpo, text="Anterior", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
                                  command=self.anterior_registro)
             btnMenos.pack(side="right", padx=20)
-            hover_event_sup(self,btnMenos)
+            hover_event_sup(self, btnMenos)
 
+            self.mostrar_registro()
             self.crear_tabla()
 
     def mostrar_registro(self):
@@ -225,8 +223,11 @@ class FormMaestro(tk.Tk):
         registro_actual = self.registros[self.indice_actual]
 
         for columna, campo in self.campos.items():
+            campo.config(state="normal")
             campo.delete(0, tk.END)
             campo.insert(0, registro_actual[columna])
+            if "id" in columna:
+                campo.config(state="readonly")
 
     def siguiente_registro(self):
         """ Muestra el siguiente registro """
@@ -281,12 +282,13 @@ class FormMaestro(tk.Tk):
 
     def cargarDatosParaActualizar(self, tipo_boton):
         self.campos_actualizar = {}
-        if tipo_boton != "Insertar":
-            for columna, value in self.campo_selected_table.items():
+        for columna, value in self.campo_selected_table.items():
+            # Comprobar si el botón no es "Insertar"
+            if tipo_boton != "Insertar":
+                print(columna)
                 frame_fila = tk.Frame(
                     self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
                 frame_fila.pack(pady=10, fill="x")
-
                 tk.Label(frame_fila, text=columna, width=15,
                          anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
 
@@ -295,23 +297,47 @@ class FormMaestro(tk.Tk):
                 self.campos_actualizar[columna].insert(0, value)
                 self.campos_actualizar[columna].pack(
                     side="left", expand=True, fill="x", padx=15)
-        else:
-            for columna, value in self.campo_selected_table.items():
-                frame_fila = tk.Frame(
-                    self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
-                frame_fila.pack(pady=10, fill="x")
+                if "id" in columna:
+                    self.campos_actualizar[columna].config(state="readonly")
+            else:
+                if columna != "id":
+                    frame_fila = tk.Frame(
+                        self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
+                    frame_fila.pack(pady=10, fill="x")
+                    tk.Label(frame_fila, text=columna, width=15,
+                             anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
+                if columna == "titulo":
+                    self.campos_actualizar[columna] = tk.Entry(
+                        frame_fila, font=("Arial", 14, "bold"))
+                    self.campos_actualizar[columna].pack(
+                        side="left", expand=True, fill="x", padx=15)
+                if columna == "autor" or columna == "editorial":
+                    editoriales = Editoriales()
+                    autores = Autores()
+                    self.editorialesNombre = [
+                        editorial["nombre"] for editorial in editoriales.editoriales]
+                    self.autoresNombres = [
+                        f"{autor["nombre"]} {autor["apellido"]}" for autor in autores.autores]
+                    print(self.editorialesNombre)
+                    print(self.autoresNombres)
+                    # Lista de opciones para el autor o editorial
+                    opcionesEditoriales = self.editorialesNombre
+                    opcionesAutores = self.autoresNombres
+                    # Establece la opción por defecto
+                    if columna == "autor":
+                        self.campos_actualizar[columna] = ttk.Combobox(
+                            frame_fila, values=opcionesAutores, font=("Arial", 14, "bold"))
+                        self.campos_actualizar[columna].set(
+                            self.autoresNombres[0])
+                    elif columna == "editorial":
+                        self.campos_actualizar[columna] = ttk.Combobox(
+                            frame_fila, values=opcionesEditoriales, font=("Arial", 14, "bold"))
+                        self.campos_actualizar[columna].set(
+                            self.editorialesNombre[0])
+                    self.campos_actualizar[columna].pack(
+                        side="left", expand=True, fill="x", padx=15)
 
-                tk.Label(frame_fila, text=columna, width=15,
-                         anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
-
-                self.campos_actualizar[columna] = tk.Entry(
-                    frame_fila, font=("Arial", 14, "bold"))
-                self.campos_actualizar[columna].pack(
-                    side="left", expand=True, fill="x", padx=15)
-        
-                
         crear_boton(self, tipo_boton)
-      
 
     def mostrar_panel_Actualizar(self, ventana):
         original_x = 246
@@ -319,7 +345,7 @@ class FormMaestro(tk.Tk):
         original_width = self.ancho_cuerpo
         original_height = self.alto_cuerpo
 
-        ventana.update_idletasks() 
+        ventana.update_idletasks()
         ventana.place(x=original_x, y=original_y -
                       original_height, width=original_width)
 

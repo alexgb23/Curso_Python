@@ -7,6 +7,7 @@ from clases.autores import Autores
 from clases.editoriales import Editoriales
 from clases.autorlibro import AutorLibro
 
+
 def config_window(self):
     self.title("eDe-Lib")
     self.iconbitmap("./image/books.ico")
@@ -14,11 +15,11 @@ def config_window(self):
     self.geometry("%dx%d+0+0" % (w, h))
     util_ventana.centrar_ventana(self, w, h)
 
+
 def instanciar_y_marcar(self, boton, btn_info):
     # Llama a los métodos deseados
-    marcar_boton(self,boton, btn_info)  # Marca el botón
-    instanciar(self,btn_info["text"])   # Llama a instanciar
-
+    marcar_boton(self, boton, btn_info)  # Marca el botón
+    instanciar(self, btn_info["text"])   # Llama a instanciar
 
 
 def acciones(self, buton, btn_info_sup):
@@ -26,7 +27,8 @@ def acciones(self, buton, btn_info_sup):
 
     # Verificar si hay una fila seleccionada antes de procesar otras acciones
     if not self.campo_selected_table:
-        messagebox.showinfo("Error", "Seleccione una fila en la tabla para actualizar")
+        messagebox.showinfo(
+            "Error", "Seleccione una fila en la tabla para actualizar")
         return  # Salir de la función si no hay selección
 
     # Manejo de acciones según el texto del botón
@@ -38,7 +40,7 @@ def acciones(self, buton, btn_info_sup):
         slide_out(self, self.panel_cuerpo)
         self.creacion_acciones_cuerpo_datos("Actualizar")
         self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
-    elif accion_texto =="Insertar":
+    elif accion_texto == "Insertar":
         slide_out(self, self.panel_cuerpo)
         self.creacion_acciones_cuerpo_datos("Insertar")
         self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
@@ -46,23 +48,23 @@ def acciones(self, buton, btn_info_sup):
         messagebox.showinfo("Eliminar", "Eliminar")
 
 
-
 def marcar_boton(self, boton, btn_info):
-        # Si hay un botón activo, restaurar su color
-        if self.boton_activo:
-            # Restaura el color original
-            self.boton_activo.config(bg=COLOR_BTN)
-            # Actualiza el estado del botón anterior
-            for btn in self.btn_info:
-                if btn["text"] == self.boton_activo.cget("text").strip():
-                    btn["activo"] = False
+    # Si hay un botón activo, restaurar su color
+    if self.boton_activo:
+        # Restaura el color original
+        self.boton_activo.config(bg=COLOR_BTN)
+        # Actualiza el estado del botón anterior
+        for btn in self.btn_info:
+            if btn["text"] == self.boton_activo.cget("text").strip():
+                btn["activo"] = False
 
-        # Marca el botón seleccionado
-        # Cambia el color del botón activo
-        boton.config(bg=COLOR_MENU_CURSOR_ENCIMA)
-        self.boton_activo = boton  # Actualiza el botón activo
-        # Actualiza el estado del botón actual
-        btn_info["activo"] = True
+    # Marca el botón seleccionado
+    # Cambia el color del botón activo
+    boton.config(bg=COLOR_MENU_CURSOR_ENCIMA)
+    self.boton_activo = boton  # Actualiza el botón activo
+    # Actualiza el estado del botón actual
+    btn_info["activo"] = True
+
 
 def marcar_boton_sup(self, buton, btn_info_sup):
     # Si hay un botón activo, restaurar su color
@@ -86,12 +88,14 @@ def hover_event(self, boton):
     def on_enter(e):
         if self.boton_activo != boton:  # Evita hover en el botón activo
             boton.config(bg=COLOR_MENU_CURSOR_ENCIMA,
-                        cursor="hand2", fg="white")
+                         cursor="hand2", fg="white")
+
     def on_leave(e):
         if self.boton_activo != boton:  # Evita restaurar en el botón activo
             boton.config(bg=COLOR_BTN, fg="white")
     boton.bind("<Enter>", on_enter)
     boton.bind("<Leave>", on_leave)
+
 
 def hover_event_sup(self, boton_sup):
     # Verifica si el botón es el activo para aplicar hover
@@ -99,6 +103,7 @@ def hover_event_sup(self, boton_sup):
         if self.boton_activo_sup != boton_sup:  # Evita hover en el botón activo
             boton_sup.config(bg=COLOR_MENU_CURSOR_ENCIMA,
                              cursor="hand2", fg="white")
+
     def on_leave(e):
         if self.boton_activo_sup != boton_sup:  # Evita restaurar en el botón activo
             boton_sup.config(bg=COLOR_BTN, fg="white")
@@ -122,6 +127,7 @@ def slide_out(self, ventana):
         self.ventanas[ventana] = self.get_window_details(ventana)
         print(self.ventanas[ventana])
     # Función para mover la ventana hacia arriba
+
     def mover_ventana(i):
         if i <= 200:  # Continuar hasta que haya deslizado completamente
             # Mover hacia arriba
@@ -135,6 +141,7 @@ def slide_out(self, ventana):
     # Iniciar el movimiento
     mover_ventana(0)
 
+
 def slide_in(self, ventana):
     detalles = self.ventanas[ventana]
     original_x = detalles['x']
@@ -147,6 +154,7 @@ def slide_in(self, ventana):
     ventana.place(x=original_x, y=original_y -
                   original_height, width=original_width)
     # Función para mover la ventana hacia abajo
+
     def mover_ventana(i):
         if i <= original_height:
             ventana.place(x=original_x, y=original_y -
@@ -160,9 +168,10 @@ def slide_in(self, ventana):
     mover_ventana(0)
     self.visible = True
 
+
 def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
     datos_actualizados = {}
-    
+
     # Recoger los datos de los campos
     for columna, entry in campos_actualizar.items():
         datos_actualizados[columna] = entry.get()
@@ -171,7 +180,8 @@ def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
     # Asegurarte de que el ID se obtiene correctamente
     if tabla == "Libros":
         # Suponiendo que tienes un campo específico para el ID
-        id = campos_actualizar["id"].get()  # Cambia "id" por el nombre del campo que contiene el ID
+        # Cambia "id" por el nombre del campo que contiene el ID
+        id = campos_actualizar["id"].get()
         print(id)
 
         # Llamar al método para modificar el registro
@@ -182,7 +192,6 @@ def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
         #     messagebox.showinfo("Éxito", "Registro actualizado correctamente.")
         # else:
         #     messagebox.showerror("Error", "No se pudo actualizar el registro.")
-
 
 
 def instanciar(self, clase):
@@ -227,6 +236,7 @@ def instanciar(self, clase):
     else:
         print("No se encontró la clase")
 
+
 def crear_boton(self, tipo_boton):
     # Definir el texto y el comando según el tipo de botón
     if tipo_boton == "Actualizar":
@@ -245,10 +255,10 @@ def crear_boton(self, tipo_boton):
         bg=COLOR_BTN,
         font=("Arial", 12, "bold"),
         fg="white",
-        command=lambda: acciones_botones_panel_top(self, self.campos_actualizar, self.titulo_panel_administracion, boton)
+        command=lambda: acciones_botones_panel_top(
+            self, self.campos_actualizar, self.titulo_panel_administracion, boton)
     )
-    
+
     # Empaquetar el botón
     boton.pack(side="right", padx=20)
     hover_event(self, boton)
-

@@ -1,4 +1,5 @@
 import util.util_ventana as util_ventana
+import tkinter as tk
 from tkinter import ttk, messagebox
 from config.config import COLOR_BARRA_SUPERIOR, COLOR_MENU_LATERAL, COLOR_CUERPO_PRINCIPAL, COLOR_MENU_CURSOR_ENCIMA, COLOR_PANEL_INFO, COLOR_CABECERA_TABLA, COLOR_BTN
 from clases.libros import Libros
@@ -22,23 +23,29 @@ def instanciar_y_marcar(self, boton, btn_info):
 
 def acciones(self, buton, btn_info_sup):
     marcar_boton_sup(self, buton, btn_info_sup)
-    if btn_info_sup["text"] == "Prueba":
-        slide_in(self,self.panel_cuerpo)
-    elif btn_info_sup["text"] == "Actualizar":
-        if self.campo_selected_table == {}:
-            messagebox.showinfo(
-                "Error", "Seleccione una fila en la tabla para actualizar"
-            )
-        else:
-            slide_out(self,self.panel_cuerpo)
-            self.creacion_acciones_cuerpo_datos()
-            self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
-    elif self.titulo_panel_administracion == "Insertar":
-        pass
-    elif self.titulo_panel_administracion == "Eliminar":
-        pass
-    elif self.titulo_panel_administracion == "Buscar":
-        pass
+
+    # Verificar si hay una fila seleccionada antes de procesar otras acciones
+    if not self.campo_selected_table:
+        messagebox.showinfo("Error", "Seleccione una fila en la tabla para actualizar")
+        return  # Salir de la función si no hay selección
+
+    # Manejo de acciones según el texto del botón
+    accion_texto = btn_info_sup["text"]
+
+    if accion_texto == "Prueba":
+        slide_in(self, self.panel_cuerpo)
+    elif accion_texto == "Actualizar":
+        slide_out(self, self.panel_cuerpo)
+        self.creacion_acciones_cuerpo_datos("Actualizar")
+        self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
+    elif accion_texto =="Insertar":
+        slide_out(self, self.panel_cuerpo)
+        self.creacion_acciones_cuerpo_datos("Insertar")
+        self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
+    elif accion_texto == "Eliminar":
+        messagebox.showinfo("Eliminar", "Eliminar")
+
+
 
 def marcar_boton(self, boton, btn_info):
         # Si hay un botón activo, restaurar su color
@@ -98,15 +105,15 @@ def hover_event_sup(self, boton_sup):
     boton_sup.bind("<Enter>", on_enter)
     boton_sup.bind("<Leave>", on_leave)
 
-    # def toggle(self, ventana):
-    #     if self.ventanas.get(ventana) is None:
-    #         # Guardar información detallada
-    #         self.ventanas[ventana] = self.get_window_details(ventana)
+    def toggle(self, ventana):
+        if self.ventanas.get(ventana) is None:
+            # Guardar información detallada
+            self.ventanas[ventana] = self.get_window_details(ventana)
 
-    #     if self.visible:
-    #         self.slide_out(ventana)
-    #     else:
-    #         self.slide_in(ventana)
+        if self.visible:
+            self.slide_out(ventana)
+        else:
+            self.slide_in(ventana)
 
 
 def slide_out(self, ventana):
@@ -154,17 +161,29 @@ def slide_in(self, ventana):
     self.visible = True
 
 def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
-    datos_actualizados = {
-        "accion": boton["text"].lower(),
-        "tabla:": tabla.lower()
-    }
+    datos_actualizados = {}
     
+    # Recoger los datos de los campos
     for columna, entry in campos_actualizar.items():
         datos_actualizados[columna] = entry.get()
-    
-       
-    print(datos_actualizados)
-    return  datos_actualizados
+        print(datos_actualizados)
+
+    # Asegurarte de que el ID se obtiene correctamente
+    if tabla == "Libros":
+        # Suponiendo que tienes un campo específico para el ID
+        id = campos_actualizar["id"].get()  # Cambia "id" por el nombre del campo que contiene el ID
+        print(id)
+
+        # Llamar al método para modificar el registro
+        # resultado = Libros.modificar_registro(id, datos_actualizados)
+
+        # Manejar el resultado (opcional)
+        # if resultado:
+        #     messagebox.showinfo("Éxito", "Registro actualizado correctamente.")
+        # else:
+        #     messagebox.showerror("Error", "No se pudo actualizar el registro.")
+
+
 
 def instanciar(self, clase):
     if clase == "Libros":
@@ -207,3 +226,29 @@ def instanciar(self, clase):
         self.cargarDatos("Inicio")
     else:
         print("No se encontró la clase")
+
+def crear_boton(self, tipo_boton):
+    # Definir el texto y el comando según el tipo de botón
+    if tipo_boton == "Actualizar":
+        texto = "Actualizar"
+    elif tipo_boton == "Insertar":
+        texto = "Insertar"
+    elif tipo_boton == "Eliminar":
+        texto = "Eliminar"
+    else:
+        return  # Si el tipo de botón no es válido, salir del método
+    # Crear el botón
+    boton = tk.Button(
+        self.panel_acciones_cuerpo,
+        text=texto,
+        padx=20,
+        bg=COLOR_BTN,
+        font=("Arial", 12, "bold"),
+        fg="white",
+        command=lambda: acciones_botones_panel_top(self, self.campos_actualizar, self.titulo_panel_administracion, boton)
+    )
+    
+    # Empaquetar el botón
+    boton.pack(side="right", padx=20)
+    hover_event(self, boton)
+

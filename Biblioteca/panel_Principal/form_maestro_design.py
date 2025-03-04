@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import font
-from tkinter import ttk, messagebox
 from config.config import COLOR_BARRA_SUPERIOR, COLOR_MENU_LATERAL, COLOR_CUERPO_PRINCIPAL, COLOR_MENU_CURSOR_ENCIMA, COLOR_PANEL_INFO, COLOR_CABECERA_TABLA, COLOR_BTN
 import util.util_ventana as util_ventana
 import util.util_imagenes as util_img
@@ -265,7 +264,7 @@ class FormMaestro(tk.Tk):
         self.panel_tabla = tk.Frame(self.panel_datos, bg="#FFFFFF")
         self.panel_tabla.place(relwidth=1, relheight=0.25, y=400)
 
-    def creacion_acciones_cuerpo_datos(self):
+    def creacion_acciones_cuerpo_datos(self, tipo_boton):
         # Crear el panel cuerpo dentro de panel_datos
         self.panel_acciones_cuerpo = tk.Frame(
             self.panel_datos, bg=COLOR_PANEL_INFO)
@@ -278,28 +277,41 @@ class FormMaestro(tk.Tk):
                 width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=-400)
 
         self.panel_cuerpo.bind("<Configure>", lambda event: ajustar_panel())
-        self.cargarDatosParaActualizar()
+        self.cargarDatosParaActualizar(tipo_boton)
 
-    def cargarDatosParaActualizar(self):
+    def cargarDatosParaActualizar(self, tipo_boton):
         self.campos_actualizar = {}
-        for columna, value in self.campo_selected_table.items():
-            frame_fila = tk.Frame(
-                self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
-            frame_fila.pack(pady=10, fill="x")
+        if tipo_boton != "Insertar":
+            for columna, value in self.campo_selected_table.items():
+                frame_fila = tk.Frame(
+                    self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
+                frame_fila.pack(pady=10, fill="x")
 
-            tk.Label(frame_fila, text=columna, width=15,
-                     anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
+                tk.Label(frame_fila, text=columna, width=15,
+                         anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
 
-            self.campos_actualizar[columna] = tk.Entry(
-                frame_fila, font=("Arial", 14, "bold"))
-            self.campos_actualizar[columna].insert(0, value)
-            self.campos_actualizar[columna].pack(
-                side="left", expand=True, fill="x", padx=15)
+                self.campos_actualizar[columna] = tk.Entry(
+                    frame_fila, font=("Arial", 14, "bold"))
+                self.campos_actualizar[columna].insert(0, value)
+                self.campos_actualizar[columna].pack(
+                    side="left", expand=True, fill="x", padx=15)
+        else:
+            for columna, value in self.campo_selected_table.items():
+                frame_fila = tk.Frame(
+                    self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
+                frame_fila.pack(pady=10, fill="x")
 
-        btnactualizar = tk.Button(self.panel_acciones_cuerpo, text="Actualizar", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
-                                  command=lambda: acciones_botones_panel_top(self,self.campos_actualizar, self.titulo_panel_administracion,btnactualizar))
-        btnactualizar.pack(side="right", padx=20)
-        hover_event(self,btnactualizar)
+                tk.Label(frame_fila, text=columna, width=15,
+                         anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
+
+                self.campos_actualizar[columna] = tk.Entry(
+                    frame_fila, font=("Arial", 14, "bold"))
+                self.campos_actualizar[columna].pack(
+                    side="left", expand=True, fill="x", padx=15)
+        
+                
+        crear_boton(self, tipo_boton)
+      
 
     def mostrar_panel_Actualizar(self, ventana):
         original_x = 246

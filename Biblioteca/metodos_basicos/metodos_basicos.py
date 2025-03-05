@@ -43,8 +43,9 @@ def acciones(self, buton, btn_info_sup):
     accion_texto = btn_info_sup["text"]
 
     if accion_texto == "Prueba":
-        slide_in(self, self.panel_cuerpo)
-    elif accion_texto == "Buscar":
+        pass
+         
+    if accion_texto == "Buscar":
         pass
     elif accion_texto == "Actualizar":
         if self.titulo_panel_administracion == "Bienvenido a eDe-Lib":  
@@ -57,7 +58,8 @@ def acciones(self, buton, btn_info_sup):
             messagebox.showinfo(
             "Error", "Seleccione una fila en la tabla para actualizar")
             return  # Salir de la función si no hay selección
-        slide_out(self, self.panel_cuerpo)
+        if self.panel_cuerpo.winfo_y() == 70:
+            slide_out(self, self.panel_cuerpo)       
         self.creacion_acciones_cuerpo_datos("Actualizar")
         self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
     elif accion_texto == "Insertar":
@@ -66,7 +68,8 @@ def acciones(self, buton, btn_info_sup):
             "Error", "Debe seleccionar en el menu lateral que desea Insertar"
             )
             return
-        slide_out(self, self.panel_cuerpo)
+        if self.panel_cuerpo.winfo_y() == 70:
+            slide_out(self, self.panel_cuerpo)       
         self.creacion_acciones_cuerpo_datos("Insertar")
         self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
     elif accion_texto == "Eliminar":
@@ -81,6 +84,8 @@ def acciones(self, buton, btn_info_sup):
             "Error", "Seleccione una fila en la tabla para actualizar")
             return  # Salir de la función si no hay selección
         messagebox.showinfo("Eliminar", "Eliminar")
+    
+
 
 
 def marcar_boton(self, boton, btn_info, es_superior=False):
@@ -271,6 +276,8 @@ def instanciar(self, clase):
         self.cargarDatos("Inicio")
     else:
         print("No se encontró la clase")
+
+    
 
 
 def crear_boton_sub_panel(self, tipo_boton):

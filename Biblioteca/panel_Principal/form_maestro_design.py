@@ -26,7 +26,8 @@ class FormMaestro(tk.Tk):
         self.campo_selected_table = {}
         self.registros = None
         self.ancho_cuerpo = 600
-        self.alto_cuerpo = 250
+        self.alto_cuerpo = 300
+        self.coordenadas = None
         self.visible = True  # Estado del panel
         self.titulo_panel_administracion = None
         config_window(self)
@@ -139,7 +140,7 @@ class FormMaestro(tk.Tk):
             highlightcolor=COLOR_BARRA_SUPERIOR,
             highlightthickness=2
         )
-        boton.pack(side=tk.RIGHT, padx=10)
+        boton.pack(side=tk.RIGHT, padx=15)
         hover_event_sup(self, boton)
 
     def controles_menu_lateral(self):
@@ -300,16 +301,23 @@ class FormMaestro(tk.Tk):
                 self.panel_datos, self.ancho_cuerpo, self.alto_cuerpo)
 
             self.panel_cuerpo.place(
-                width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=100)
+                width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=y)
+            
+            self.coordenadas = [x, y, self.ancho_cuerpo, self.alto_cuerpo]
+            
 
+        # Llama a ajustar_panel al configurar panel_datos
         self.panel_datos.bind("<Configure>", lambda event: ajustar_panel())
 
         tk.Label(self.panel_datos, text=f"Panel de Administración de {self.titulo_panel_administracion}",
-                 bg=COLOR_CUERPO_PRINCIPAL, fg=COLOR_BARRA_SUPERIOR, font=("Arial", 30, "bold")).place(relx=0.5, y=10, anchor="n")
+                bg=COLOR_CUERPO_PRINCIPAL, fg=COLOR_BARRA_SUPERIOR, font=("Arial", 30, "bold")).place(relx=0.5, y=10, anchor="n")
 
         # Crear panel para la tabla
         self.panel_tabla = tk.Frame(self.panel_datos, bg="#FFFFFF")
-        self.panel_tabla.place(relwidth=1, relheight=0.25, y=400)
+        self.panel_tabla.place(relwidth=1, relheight=0.25, y=420)
+
+        ajustar_panel()
+
 
     def creacion_acciones_cuerpo_datos(self, tipo_boton):
         # Crear el panel cuerpo dentro de panel_datos
@@ -317,17 +325,23 @@ class FormMaestro(tk.Tk):
             self.panel_datos, bg=COLOR_PANEL_INFO)
 
         def ajustar_panel():
-            x, y = util_ventana.centrar_panel(
+            x, y = util_ventana.centrar_panel_oculto(
                 self.panel_datos, self.ancho_cuerpo, self.alto_cuerpo)
             self.panel_acciones_cuerpo.place(
-                width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=-400)
-        self.panel_cuerpo.bind("<Configure>", lambda event: ajustar_panel())
+                width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=y)
+            
+        self.panel_datos.bind("<Configure>", lambda event: ajustar_panel())
+     
+        ajustar_panel()
+
         if tipo_boton == "Insertar":
             self.cargarDatosParaInsertar(tipo_boton)
+
         else:    
             self.cargarDatosParaActualizar(tipo_boton)
 
     def cargarDatosParaActualizar(self, tipo_boton):
+        tk.Label(self.panel_acciones_cuerpo, text=" Panel para Actualizar Datos", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
         self.campos_actualizar = {}
         for columna, value in self.campo_selected_table.items():
             frame_fila = tk.Frame(
@@ -344,8 +358,10 @@ class FormMaestro(tk.Tk):
                 self.campos_actualizar[columna].config(state="readonly")
 
         crear_boton_sub_panel(self, tipo_boton)
+      
     
     def cargarDatosParaInsertar(self, tipo_boton):
+        tk.Label(self.panel_acciones_cuerpo, text=" Panel para Insertar Datos", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
         self.campos_insertar = {}
         dat_filas=datos_llenar_insertar(self, self.titulo_panel_administracion) 
         if "titulo" and "año" and "autor" and "editorial" in dat_filas:
@@ -365,10 +381,11 @@ class FormMaestro(tk.Tk):
                         side="left", expand=True, fill="x", padx=15)
                 
         crear_boton_sub_panel(self, tipo_boton)
+      
 
     def mostrar_panel_Actualizar(self, ventana):
-        original_x = 246
-        original_y = 100
+        original_x = self.coordenadas[0]
+        original_y = self.coordenadas[1]
         original_width = self.ancho_cuerpo
         original_height = self.alto_cuerpo
 
@@ -443,4 +460,6 @@ class FormMaestro(tk.Tk):
                 self.tabla["columns"], self.tabla.item(item, "values"))}
 
     def posision_info(self, ventana):
-        return ventana.winfo_x(), ventana.winfo_y(), ventana.winfo_width(), ventana.winfo_height()
+        self.coordenadas = ventana.winfo_x(), ventana.winfo_y(), ventana.winfo_width(), ventana.winfo_height()
+        print(self.coordenadas)
+       

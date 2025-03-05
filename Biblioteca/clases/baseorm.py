@@ -10,7 +10,6 @@ class BaseORM (ABC):
     def __init__(self):
           self.ejecutar_consulta = Database(self.tabla).ejecutar_consulta
        
-
     def crear_registro(self, datos):
         """
         Inserta un nuevo registro en la tabla.

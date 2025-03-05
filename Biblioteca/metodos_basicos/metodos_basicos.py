@@ -160,7 +160,6 @@ def slide_out(self, ventana):
     # Guardar información detallada si no se ha hecho ya
     if self.ventanas.get(ventana) is None:
         self.ventanas[ventana] = self.get_window_details(ventana)
-        print(self.ventanas[ventana])
     # Función para mover la ventana hacia arriba
 
     def mover_ventana(i):

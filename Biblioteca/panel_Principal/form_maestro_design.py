@@ -349,9 +349,28 @@ class FormMaestro(tk.Tk):
         crear_boton_sub_panel(self, tipo_boton)
     
     def cargarDatosParaInsertar(self, tipo_boton):
-        self.campos_insertar = {}
-        dat_filas=datos_llenar_insertar(self, self.titulo_panel_administracion)
-        print(dat_filas)
+        dat_filas=datos_llenar_insertar(self, self.titulo_panel_administracion) 
+        if "titulo" and "año" and "autor" and "editorial" in dat_filas:
+            self.crear_cuerpo_insertar_libros(dat_filas)
+        else:
+            for columna in dat_filas:
+                frame_fila = tk.Frame(
+                    self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
+                frame_fila.pack(pady=10, fill="x")
+                tk.Label(frame_fila, text=columna, width=15,
+                        anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
+                
+                self.campos_insertar[columna] = tk.Entry(
+                        frame_fila, font=("Arial", 14, "bold"))
+                self.campos_insertar[columna].pack(
+                        side="left", expand=True, fill="x", padx=15)
+                
+
+
+        crear_boton_sub_panel(self, tipo_boton)
+    
+    def crear_cuerpo_insertar_libros(self,dat_filas):  
+        self.campos_insertar = {} 
         for columna in dat_filas:
             frame_fila = tk.Frame(
                 self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
@@ -370,8 +389,6 @@ class FormMaestro(tk.Tk):
                     editorial["nombre"] for editorial in editoriales.editoriales]
                 self.autoresNombres = [
                     f"{autor["nombre"]} {autor["apellido"]}" for autor in autores.autores]
-                print(self.editorialesNombre)
-                print(self.autoresNombres)
                 # Lista de opciones para el autor o editorial
                 opcionesEditoriales = self.editorialesNombre
                 opcionesAutores = self.autoresNombres
@@ -388,10 +405,9 @@ class FormMaestro(tk.Tk):
                         self.editorialesNombre[0])
                 self.campos_insertar[columna].pack(
                     side="left", expand=True, fill="x", padx=15)
+                    
+    
 
-        crear_boton_sub_panel(self, tipo_boton)
-    
-    
 
     def mostrar_panel_Actualizar(self, ventana):
         original_x = 246

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mysql_db
--- Tiempo de generación: 01-03-2025 a las 23:38:44
+-- Tiempo de generación: 05-03-2025 a las 11:36:59
 -- Versión del servidor: 8.0.40
 -- Versión de PHP: 8.2.8
 
@@ -85,24 +85,26 @@ INSERT INTO `autor_libro` (`id_autor`, `id_libro`) VALUES
 
 CREATE TABLE `editoriales` (
   `id` int NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL
+  `nombre` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `direccion` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `telefono` varchar(9) COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `editoriales`
 --
 
-INSERT INTO `editoriales` (`id`, `nombre`) VALUES
-(1, 'Editorial Planeta'),
-(2, 'Grupo Santillana'),
-(3, 'Penguin Random House'),
-(4, 'Ediciones Akal'),
-(5, 'Editorial Anagrama'),
-(6, 'RBA Libros'),
-(7, 'Editorial Espasa'),
-(8, 'Alianza Editorial'),
-(9, 'Ediciones B'),
-(10, 'Tusquets Editores');
+INSERT INTO `editoriales` (`id`, `nombre`, `direccion`, `telefono`) VALUES
+(1, 'Editorial Planeta', 'cervantes 6 3D', '687254159'),
+(2, 'Grupo Santillana', NULL, NULL),
+(3, 'Penguin Random House', NULL, NULL),
+(4, 'Ediciones Akal', NULL, NULL),
+(5, 'Editorial Anagrama', NULL, NULL),
+(6, 'RBA Libros', NULL, NULL),
+(7, 'Editorial Espasa', NULL, NULL),
+(8, 'Alianza Editorial', NULL, NULL),
+(9, 'Ediciones B', NULL, NULL),
+(10, 'Tusquets Editores', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -113,25 +115,43 @@ INSERT INTO `editoriales` (`id`, `nombre`) VALUES
 CREATE TABLE `libros` (
   `id` int NOT NULL,
   `titulo` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `id_editorial` int DEFAULT NULL,
-  `anio` date DEFAULT NULL
+  `anio` date DEFAULT NULL,
+  `id_editorial` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `libros`
 --
 
-INSERT INTO `libros` (`id`, `titulo`, `id_editorial`, `anio`) VALUES
-(1, 'Cien años de soledad', 1, '1967-01-01'),
-(2, 'La casa de los espíritus', 2, '1982-01-01'),
-(3, 'Harry Potter y la piedra filosofal', 3, '1997-01-01'),
-(4, '1984', 4, '1949-01-01'),
-(5, 'La ciudad y los perros', 5, '1963-01-01'),
-(6, 'Rayuela', 6, '1963-01-01'),
-(7, 'Kafka en la orilla', 7, '2002-01-01'),
-(8, 'Orgullo y prejuicio', 8, '1813-01-01'),
-(9, 'Las aventuras de Tom Sawyer', 9, '1876-01-01'),
-(10, 'Al faro', 10, '1927-01-01');
+INSERT INTO `libros` (`id`, `titulo`, `anio`, `id_editorial`) VALUES
+(1, 'Cien años de soledad', '1967-01-01', 1),
+(2, 'La casa de los espíritus', '1982-01-01', 2),
+(3, 'Harry Potter y la piedra filosofal', '1997-01-01', 3),
+(4, '1984', '1949-01-01', 4),
+(5, 'La ciudad y los perros', '1963-01-01', 5),
+(6, 'Rayuela', '1963-01-01', 6),
+(7, 'Kafka en la orilla', '2002-01-01', 7),
+(8, 'Orgullo y prejuicio', '1813-01-01', 8),
+(9, 'Las aventuras de Tom Sawyer', '1876-01-01', 9),
+(10, 'Al faro', '1927-01-01', 10),
+(11, 'El amor en los tiempos del cólera', '1985-01-01', 1),
+(12, 'Crónica de una muerte anunciada', '1981-01-01', 1),
+(13, 'El túnel', '1948-01-01', 2),
+(14, 'Ficciones', '1944-01-01', 2),
+(15, 'Cumbres borrascosas', '1847-01-01', 3),
+(16, 'El gran Gatsby', '1925-01-01', 4),
+(17, 'Moby Dick', '1851-01-01', 5),
+(18, 'Don Quijote de la Mancha', '1605-01-01', 6),
+(19, 'En busca del tiempo perdido', '1913-01-01', 7),
+(20, 'La metamorfosis', '1915-01-01', 8),
+(21, 'Las uvas de la ira', '1939-01-01', 9),
+(22, 'El retrato de Dorian Gray', '1890-01-01', 10),
+(23, 'La sombra del viento', '2001-01-01', 1),
+(24, 'El viejo y el mar', '1952-01-01', 2),
+(25, 'Cuentos de la selva', '1918-01-01', 3),
+(26, 'Los miserables', '1862-01-01', 4),
+(27, 'El principito', '1943-01-01', 5),
+(28, 'El nombre de la rosa', '1980-01-01', 6);
 
 --
 -- Índices para tablas volcadas
@@ -183,7 +203,7 @@ ALTER TABLE `editoriales`
 -- AUTO_INCREMENT de la tabla `libros`
 --
 ALTER TABLE `libros`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Restricciones para tablas volcadas

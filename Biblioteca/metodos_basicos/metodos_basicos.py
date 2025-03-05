@@ -6,6 +6,7 @@ from clases.libros import Libros
 from clases.autores import Autores
 from clases.editoriales import Editoriales
 from clases.autorlibro import AutorLibro
+from tkinter import font
 
 
 def config_window(self):
@@ -21,66 +22,97 @@ def instanciar_y_marcar(self, boton, btn_info):
     marcar_boton(self, boton, btn_info)  # Marca el botón
     instanciar(self, btn_info["text"])   # Llama a instanciar
 
-
+def datos_llenar_insertar(self, tipo_panel):
+    insertar_libro="titulo","año","autor", "editorial"
+    insertar_editorial="nombre", "direccion", "telefono"
+    insertar_autor="nombre", "apellido", "nacionalidad"
+    if tipo_panel == "Libros":
+        return insertar_libro
+    elif tipo_panel == "Editoriales":
+        return insertar_editorial
+    elif tipo_panel == "Autores":
+        return insertar_autor
+    
 def acciones(self, buton, btn_info_sup):
-    marcar_boton_sup(self, buton, btn_info_sup)
-
-    # Verificar si hay una fila seleccionada antes de procesar otras acciones
-    if not self.campo_selected_table:
-        messagebox.showinfo(
-            "Error", "Seleccione una fila en la tabla para actualizar")
-        return  # Salir de la función si no hay selección
+    marcar_boton(self, buton, btn_info_sup, True)
 
     # Manejo de acciones según el texto del botón
     accion_texto = btn_info_sup["text"]
 
     if accion_texto == "Prueba":
         slide_in(self, self.panel_cuerpo)
+    elif accion_texto == "Buscar":
+        pass
     elif accion_texto == "Actualizar":
+        if self.titulo_panel_administracion == "Bienvenido a eDe-Lib":  
+            messagebox.showinfo(
+                "Error", "Debe seleccionar en el menu lateral que desea Insertar"
+            )
+            return
+        # Verificar si hay una fila seleccionada antes de procesar otras acciones
+        if not self.campo_selected_table:
+            messagebox.showinfo(
+            "Error", "Seleccione una fila en la tabla para actualizar")
+            return  # Salir de la función si no hay selección
         slide_out(self, self.panel_cuerpo)
         self.creacion_acciones_cuerpo_datos("Actualizar")
         self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
     elif accion_texto == "Insertar":
+        if self.titulo_panel_administracion == "Bienvenido a eDe-Lib": 
+            messagebox.showinfo(
+            "Error", "Debe seleccionar en el menu lateral que desea Insertar"
+            )
+            return
         slide_out(self, self.panel_cuerpo)
         self.creacion_acciones_cuerpo_datos("Insertar")
         self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
     elif accion_texto == "Eliminar":
+        if self.titulo_panel_administracion == "Bienvenido a eDe-Lib": 
+            messagebox.showinfo(
+                "Error", "Debe seleccionar en el menu lateral que desea Insertar"
+            )
+            return
+        # Verificar si hay una fila seleccionada antes de procesar otras acciones
+        if not self.campo_selected_table:
+            messagebox.showinfo(
+            "Error", "Seleccione una fila en la tabla para actualizar")
+            return  # Salir de la función si no hay selección
         messagebox.showinfo("Eliminar", "Eliminar")
 
 
-def marcar_boton(self, boton, btn_info):
+def marcar_boton(self, boton, btn_info, es_superior=False):
+    # Determinar el botón activo y la lista de botones según el tipo
+    if es_superior:
+        boton_activo = self.boton_activo_sup
+        btn_info_lista = self.btn_info_sup
+    else:
+        boton_activo = self.boton_activo
+        btn_info_lista = self.btn_info
+
     # Si hay un botón activo, restaurar su color
-    if self.boton_activo:
-        # Restaura el color original
-        self.boton_activo.config(bg=COLOR_BTN)
+    if boton_activo:
+        boton_activo.config(bg=COLOR_BTN)
         # Actualiza el estado del botón anterior
-        for btn in self.btn_info:
-            if btn["text"] == self.boton_activo.cget("text").strip():
-                btn["activo"] = False
+        for btn in btn_info_lista:
+            if btn["text"] == boton_activo.cget("text").strip():
+                btn["activo"] = False  # Desmarcar el botón anterior
 
     # Marca el botón seleccionado
-    # Cambia el color del botón activo
     boton.config(bg=COLOR_MENU_CURSOR_ENCIMA)
-    self.boton_activo = boton  # Actualiza el botón activo
-    # Actualiza el estado del botón actual
-    btn_info["activo"] = True
+    if es_superior:
+        self.boton_activo_sup = boton  # Actualiza el botón activo superior
+    else:
+        self.boton_activo = boton  # Actualiza el botón activo lateral
+
+    btn_info["activo"] = True  # Marca el botón actual como activo
 
 
-def marcar_boton_sup(self, buton, btn_info_sup):
-    # Si hay un botón activo, restaurar su color
+def reset_btn_sup(self):
     if self.boton_activo_sup:
-        # Restaura el color original
         self.boton_activo_sup.config(bg=COLOR_BTN)
-        # Actualiza el estado del botón anterior
-        for btn in self.btn_info:  # Usa self.btn_info_sup aquí
+        for btn in self.btn_info_sup:
             if btn["text"] == self.boton_activo_sup.cget("text").strip():
                 btn["activo"] = False
-    # Marca el botón seleccionado
-    # Cambia el color del botón activo
-    buton.config(bg=COLOR_MENU_CURSOR_ENCIMA)
-    self.boton_activo_sup = buton  # Actualiza el botón activo
-    # Actualiza el estado del botón actual
-    btn_info_sup["activo"] = True
 
 
 def hover_event(self, boton):
@@ -195,6 +227,7 @@ def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
 
 
 def instanciar(self, clase):
+    reset_btn_sup(self)
     if clase == "Libros":
         try:
             libros = Libros()
@@ -237,7 +270,7 @@ def instanciar(self, clase):
         print("No se encontró la clase")
 
 
-def crear_boton(self, tipo_boton):
+def crear_boton_sub_panel(self, tipo_boton):
     # Definir el texto y el comando según el tipo de botón
     if tipo_boton == "Actualizar":
         texto = "Actualizar"
@@ -248,7 +281,7 @@ def crear_boton(self, tipo_boton):
     else:
         return  # Si el tipo de botón no es válido, salir del método
     # Crear el botón
-    boton = tk.Button(
+    buton = tk.Button(
         self.panel_acciones_cuerpo,
         text=texto,
         padx=20,
@@ -256,9 +289,10 @@ def crear_boton(self, tipo_boton):
         font=("Arial", 12, "bold"),
         fg="white",
         command=lambda: acciones_botones_panel_top(
-            self, self.campos_actualizar, self.titulo_panel_administracion, boton)
+            self, self.campos_actualizar, self.titulo_panel_administracion, buton)
     )
 
     # Empaquetar el botón
-    boton.pack(side="right", padx=20)
-    hover_event(self, boton)
+    buton.pack(side="right", padx=20)
+    hover_event(self, buton)
+

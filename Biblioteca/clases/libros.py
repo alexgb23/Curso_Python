@@ -13,7 +13,7 @@ class Libros(BaseORM):
         Obtiene todos los registros de la tabla libros, con nombre completo del autor y el nombre de la editorial.
         """
         consulta = """
-        SELECT libros.id, libros.titulo, CONCAT(autores.nombre, ' ', autores.apellido) AS autor, editoriales.nombre AS editorial
+        SELECT libros.id, libros.titulo, libros.anio, CONCAT(autores.nombre, ' ', autores.apellido) AS autor, editoriales.nombre AS editorial
         FROM libros
         INNER JOIN autor_libro ON libros.id = autor_libro.id_libro
         INNER JOIN autores ON autor_libro.id_autor = autores.id

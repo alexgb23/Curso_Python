@@ -12,5 +12,7 @@ class Editoriales(BaseORM):
         for editorial in self.editoriales:
             id = editorial.get('id')  
             nombre = editorial.get('nombre')  
+            direccio= editorial.get('direccion')
+            telefono = editorial.get('telefono')
             print(f'ID: {id}, Nombre: {nombre}')  
 

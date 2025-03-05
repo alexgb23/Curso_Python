@@ -319,12 +319,9 @@ class FormMaestro(tk.Tk):
         def ajustar_panel():
             x, y = util_ventana.centrar_panel(
                 self.panel_datos, self.ancho_cuerpo, self.alto_cuerpo)
-
             self.panel_acciones_cuerpo.place(
                 width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=-400)
-
         self.panel_cuerpo.bind("<Configure>", lambda event: ajustar_panel())
-
         if tipo_boton == "Insertar":
             self.cargarDatosParaInsertar(tipo_boton)
         else:    
@@ -362,14 +359,12 @@ class FormMaestro(tk.Tk):
                 frame_fila.pack(pady=10, fill="x")
                 tk.Label(frame_fila, text=columna, width=15,
                         anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
-                
                 self.campos_insertar[columna] = tk.Entry(
                         frame_fila, font=("Arial", 14, "bold"))
                 self.campos_insertar[columna].pack(
                         side="left", expand=True, fill="x", padx=15)
                 
         crear_boton_sub_panel(self, tipo_boton)
-
 
     def mostrar_panel_Actualizar(self, ventana):
         original_x = 246

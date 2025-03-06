@@ -257,7 +257,7 @@ def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
             nuevos_datos = {}
 
 
-##############################################Aqui quedo
+##############################################Aqui quedo po hoy
     if boton['text'] == "Insertar":
         if tabla == "Libros":
             nuevos_datos = {}

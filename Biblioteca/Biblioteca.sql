@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mysql_db
--- Tiempo de generación: 05-03-2025 a las 11:36:59
--- Versión del servidor: 8.0.40
--- Versión de PHP: 8.2.8
+-- Tiempo de generación: 06-03-2025 a las 18:24:36
+-- Versión del servidor: 8.0.41
+-- Versión de PHP: 8.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `autores` (
   `id` int NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `apellido` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `nacionalidad` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `apellido` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `nacionalidad` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
@@ -85,9 +85,9 @@ INSERT INTO `autor_libro` (`id_autor`, `id_libro`) VALUES
 
 CREATE TABLE `editoriales` (
   `id` int NOT NULL,
-  `nombre` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `direccion` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `telefono` varchar(9) COLLATE utf8mb4_spanish_ci DEFAULT NULL
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `direccion` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `telefono` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
@@ -95,16 +95,16 @@ CREATE TABLE `editoriales` (
 --
 
 INSERT INTO `editoriales` (`id`, `nombre`, `direccion`, `telefono`) VALUES
-(1, 'Editorial Planeta', 'cervantes 6 3D', '687254159'),
-(2, 'Grupo Santillana', NULL, NULL),
-(3, 'Penguin Random House', NULL, NULL),
-(4, 'Ediciones Akal', NULL, NULL),
-(5, 'Editorial Anagrama', NULL, NULL),
-(6, 'RBA Libros', NULL, NULL),
-(7, 'Editorial Espasa', NULL, NULL),
-(8, 'Alianza Editorial', NULL, NULL),
-(9, 'Ediciones B', NULL, NULL),
-(10, 'Tusquets Editores', NULL, NULL);
+(1, 'Editorial Planeta', 'Calle de la Editorial, 1, Madrid', '911234567'),
+(2, 'Grupo Santillana', 'Avenida de la Educación, 45, Madrid', '911234568'),
+(3, 'Penguin Random House', 'Calle de la Literatura, 23, Madrid', '911234569'),
+(4, 'Ediciones Akal', 'Paseo de la Cultura, 67, Barcelona', '911234570'),
+(5, 'Editorial Anagrama', 'Calle de la Novela, 12, Barcelona', '911234571'),
+(6, 'RBA Libros', 'Avenida de los Libros, 34, Barcelona', '911234572'),
+(7, 'Editorial Espasa', 'Calle de la Prosa, 56, Sevilla', '911234573'),
+(8, 'Alianza Editorial', 'Avenida de la Narrativa, 78, Valencia', '911234574'),
+(9, 'Ediciones B', 'Calle del Ensayo, 90, Bilbao', '911234575'),
+(10, 'Tusquets Editores', 'Avenida del Texto, 11, Zaragoza', '911234576');
 
 -- --------------------------------------------------------
 
@@ -114,7 +114,7 @@ INSERT INTO `editoriales` (`id`, `nombre`, `direccion`, `telefono`) VALUES
 
 CREATE TABLE `libros` (
   `id` int NOT NULL,
-  `titulo` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `titulo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `anio` date DEFAULT NULL,
   `id_editorial` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
@@ -125,9 +125,9 @@ CREATE TABLE `libros` (
 
 INSERT INTO `libros` (`id`, `titulo`, `anio`, `id_editorial`) VALUES
 (1, 'Cien años de soledad', '1967-01-01', 1),
-(2, 'La casa de los espíritus', '1982-01-01', 2),
+(2, 'La casa de los espíritus', '1982-01-01', 1),
 (3, 'Harry Potter y la piedra filosofal', '1997-01-01', 3),
-(4, '1984', '1949-01-01', 4),
+(4, '1984', '1949-01-01', 1),
 (5, 'La ciudad y los perros', '1963-01-01', 5),
 (6, 'Rayuela', '1963-01-01', 6),
 (7, 'Kafka en la orilla', '2002-01-01', 7),
@@ -203,7 +203,7 @@ ALTER TABLE `editoriales`
 -- AUTO_INCREMENT de la tabla `libros`
 --
 ALTER TABLE `libros`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Restricciones para tablas volcadas

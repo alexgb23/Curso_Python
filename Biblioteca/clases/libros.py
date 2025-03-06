@@ -29,6 +29,10 @@ class Libros(BaseORM):
             id_Editorial = libro.get('id_editorial')
             print(f'ID: {id}, Titulo: {titulo}, id_editorial: {id_Editorial}',)  
 
+    def actualizar_libro(self, id, nuevos_datos):
+        pass
+
+
 
 
 

@@ -21,12 +21,11 @@ class FormMaestro(tk.Tk):
         self.boton_activo = None  # Botón activo
         self.boton_activo_sup = None
         self.registros = []
-        self.ventanas = {}
         self.indice_actual = 0
         self.campo_selected_table = {}
         self.registros = None
         self.ancho_cuerpo = 600
-        self.alto_cuerpo = 300
+        self.alto_cuerpo = 320
         self.coordenadas = None
         self.visible = True  # Estado del panel
         self.titulo_panel_administracion = None
@@ -199,27 +198,6 @@ class FormMaestro(tk.Tk):
         else:
             self.boton_activo = boton
 
-    def get_window_details(self, ventana, position=0):
-        # Obtener las coordenadas, tamaño y nombre de la ventana
-        x = ventana.winfo_x()
-        y = ventana.winfo_y() + position
-        width = ventana.winfo_width()
-        height = ventana.winfo_height()
-        name = ventana.__class__.__name__  # Esto obtendrá el nombre de la clase del panel
-        return {
-            'x': x,
-            'y': y,
-            'width': width,
-            'height': height,
-            'name': name
-        }
-
-    def grid_info(self, ventana):
-        # Devuelve información del grid
-        return {
-            'row': ventana.grid_info().get('row', None),
-            'column': ventana.grid_info().get('column', None)
-        }
 
     def cargarDatos(self, quepanel=None):
         # Esto lo hago para si clican en inicio al cargar el panel no se rompa el programa
@@ -242,7 +220,7 @@ class FormMaestro(tk.Tk):
 
                 tk.Label(frame_fila, text=columna, width=15,
                          anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
-
+                
                 self.campos[columna] = ttk.Entry(
                     frame_fila, font=("Arial", 14, "bold"))
 
@@ -288,6 +266,8 @@ class FormMaestro(tk.Tk):
             self.indice_actual -= 1
             self.mostrar_registro()
 
+
+
     def creacion_cuerpo_datos(self):
         self.panel_datos = tk.Frame(
             self.cuerpo_principal, bg=COLOR_CUERPO_PRINCIPAL)
@@ -325,25 +305,31 @@ class FormMaestro(tk.Tk):
             self.panel_datos, bg=COLOR_PANEL_INFO)
 
         def ajustar_panel():
-            x, y = util_ventana.centrar_panel_oculto(
+            x, y = util_ventana.centrar_panel(
                 self.panel_datos, self.ancho_cuerpo, self.alto_cuerpo)
             self.panel_acciones_cuerpo.place(
-                width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=y)
-            
-        self.panel_datos.bind("<Configure>", lambda event: ajustar_panel())
-     
+                width=self.ancho_cuerpo, height=self.alto_cuerpo, x=x, y=-400)
+                
+        self.panel_cuerpo.bind("<Configure>", lambda event: ajustar_panel())
+        
         ajustar_panel()
 
         if tipo_boton == "Insertar":
+        
             self.cargarDatosParaInsertar(tipo_boton)
-
         else:    
             self.cargarDatosParaActualizar(tipo_boton)
 
+
     def cargarDatosParaActualizar(self, tipo_boton):
-        tk.Label(self.panel_acciones_cuerpo, text=" Panel para Actualizar Datos", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
         self.campos_actualizar = {}
-        for columna, value in self.campo_selected_table.items():
+        tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Actualizar {self.titulo_panel_administracion}", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
+        if self.titulo_panel_administracion == "Libros":
+            crear_cuerpo_actualizar_libros(self, self.campo_selected_table)
+        elif self.titulo_panel_administracion == "Autor-Libro":
+            crear_cuerpo_actualizar_autor_libro(self, self.campo_selected_table)
+        else:
+           for columna, value in self.campo_selected_table.items():
             frame_fila = tk.Frame(
                 self.panel_acciones_cuerpo, bg=COLOR_PANEL_INFO)
             frame_fila.pack(pady=10, fill="x")
@@ -354,14 +340,19 @@ class FormMaestro(tk.Tk):
             self.campos_actualizar[columna].insert(0, value)
             self.campos_actualizar[columna].pack(
                 side="left", expand=True, fill="x", padx=15)
-            if "id" in columna:
-                self.campos_actualizar[columna].config(state="readonly")
+
+            if columna == "id":
+                self.campos_actualizar[columna].config(state="readonly", fg="darkgrey")
 
         crear_boton_sub_panel(self, tipo_boton)
+    
+
+        # Forzar el ajuste del panel después de cargar los datos para que no sea visible
+        self.panel_cuerpo.after(10, lambda: self.panel_acciones_cuerpo.place(y=-400))
       
     
     def cargarDatosParaInsertar(self, tipo_boton):
-        tk.Label(self.panel_acciones_cuerpo, text=" Panel para Insertar Datos", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
+        tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Actualizar {self.titulo_panel_administracion}", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
         self.campos_insertar = {}
         dat_filas=datos_llenar_insertar(self, self.titulo_panel_administracion) 
         if "titulo" and "año" and "autor" and "editorial" in dat_filas:
@@ -381,35 +372,14 @@ class FormMaestro(tk.Tk):
                         side="left", expand=True, fill="x", padx=15)
                 
         crear_boton_sub_panel(self, tipo_boton)
+
+        # Forzar el ajuste del panel después de cargar los datos para que no sea visible
+        self.panel_cuerpo.after(10, lambda: self.panel_acciones_cuerpo.place(y=-400))
       
 
-    def mostrar_panel_Actualizar(self, ventana):
-        original_x = self.coordenadas[0]
-        original_y = self.coordenadas[1]
-        original_width = self.ancho_cuerpo
-        original_height = self.alto_cuerpo
-
-        ventana.update_idletasks()
-        ventana.place(x=original_x, y=original_y -
-                      original_height, width=original_width)
-
-        # Función para mover la ventana hacia abajo
-        def mover_ventana(i):
-            if i <= original_height:
-                ventana.place(x=original_x, y=original_y -
-                              original_height + i, width=original_width)
-                self.update_idletasks()
-                self.after(10, mover_ventana, i + 5)
-            else:
-                ventana.place(x=original_x, y=original_y,
-                              width=original_width, height=original_height)
-
-        # Establecer un delay antes de comenzar el movimiento
-        delay = 1000  # Tiempo en milisegundos (1000 ms = 1 segundo)
-        self.after(delay, mover_ventana, 0)
-        self.visible = True
-
+    """Creacion de la Tabla"""
     def crear_tabla(self):
+        print(self.registros)
         self.columnas = list(self.registros[0].keys())
 
         # Crear un estilo para la tabla
@@ -459,7 +429,18 @@ class FormMaestro(tk.Tk):
             self.campo_selected_table = {col: val for col, val in zip(
                 self.tabla["columns"], self.tabla.item(item, "values"))}
 
+    """
+    Metodos Necesarios dentro del codigo
+    """
+# Metodo para obtener las coordenadas, tamaño y nombre de la ventana pequeña donde van los datos de la tabla, ya que esta se ajusta al contenido de la pantalla
     def posision_info(self, ventana):
         self.coordenadas = ventana.winfo_x(), ventana.winfo_y(), ventana.winfo_width(), ventana.winfo_height()
-        print(self.coordenadas)
-       
+
+# Metodo para la transicion entre los paneles pequeños paneles
+    def transicion_paneles_if_true(self):
+        if self.panel_cuerpo.winfo_y() == 70:
+            slide_out(self, self.panel_cuerpo)
+            return
+        elif self.panel_acciones_cuerpo.winfo_y() == 70:
+            slide_out(self, self.panel_acciones_cuerpo)
+            return

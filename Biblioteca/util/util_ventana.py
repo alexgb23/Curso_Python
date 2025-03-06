@@ -15,14 +15,3 @@ def centrar_panel(panel_contenedor, panel_ancho, panel_alto):
     y = 70
     
     return x, y
-
-def centrar_panel_oculto(panel_contenedor, panel_ancho, panel_alto):
-    # Obtener las dimensiones del panel contenedor después de que se haya mostrado
-    ancho_contenedor = panel_contenedor.winfo_width()
-    alto_contenedor = panel_contenedor.winfo_height()
-    
-    # Calcular las posiciones x e y para centrar el panel
-    x = (ancho_contenedor - panel_ancho) / 2
-    y = -400
-    
-    return x, y

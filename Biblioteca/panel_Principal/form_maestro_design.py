@@ -15,6 +15,7 @@ class FormMaestro(tk.Tk):
 
         try:
             self.perfil = util_img.leer_imagen("image/eDe-Lib.png", (250, 250))
+            self.exit= util_img.leer_imagen_con_transparencia("image/delete_exit_1195.png", (32, 32))
         except FileNotFoundError as e:
             print(f"Error: {e}")
 
@@ -47,7 +48,7 @@ class FormMaestro(tk.Tk):
         self.cuerpo_principal = tk.Frame(self, bg=COLOR_CUERPO_PRINCIPAL)
         self.cuerpo_principal.pack(side=tk.RIGHT, fill="both", expand=True)
 
-        # Ocultar la barra de título y los botones
+        ## Ocultar la barra de título y los botones
         # self.cuerpo_principal.winfo_toplevel().overrideredirect(True)
 
      
@@ -106,12 +107,16 @@ class FormMaestro(tk.Tk):
             "Time New Roman", 24, "bold"), bg=COLOR_BARRA_SUPERIOR, padx=10, pady=16)
         self.labelTitulo.pack(side=tk.LEFT, padx=15)
 
+        self.salir=tk.Button(self.barra_superior, image=self.exit )
+        self.salir.pack(side=tk.RIGHT, padx=15)
+        self.salir.config(command=self.destroy, bg="pink")
+
+
         self.btn_info_sup = [  # Inicializa la lista de botones superiores
             {"text": "Actualizar", "icon": "\uf021", "activo": False},
             {"text": "Eliminar", "icon": "\uf2ed", "activo": False},
             {"text": "Insertar", "icon": "\uf067", "activo": False},
             {"text": "Buscar", "icon": "\uf002", "activo": False},
-            {"text": "Prueba", "icon": "\uf0f6", "activo": False},
         ]
 
         for btn in self.btn_info_sup:
@@ -121,7 +126,7 @@ class FormMaestro(tk.Tk):
             but.config(command=lambda b=but, btn=btn: acciones(
                 self, b, btn))  # Asigna el comando
             
-            
+        hover_event_Exit(self, self.salir)
 
     def configurar_btn_superior(self, boton, text, icono, font_awesome, ancho_op, alto_op, activo):
         boton.config(
@@ -212,21 +217,28 @@ class FormMaestro(tk.Tk):
 
             self.campos = {}
             self.columnas = list(self.registros[0].keys())
-
+              # Diccionario para mapear columnas a sus etiquetas
+            etiquetas = {
+            "anio": "Año"
+            }
+            
             for columna in self.columnas:
                 # Contenedor de cada fila (etiqueta + campo)
                 frame_fila = tk.Frame(self.panel_cuerpo, bg=COLOR_PANEL_INFO)
                 frame_fila.pack(pady=10, fill="x")
 
-                tk.Label(frame_fila, text=columna, width=15,
-                         anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
+                 # Obtener la etiqueta correspondiente, o usar la columna en sí
+                texto_label = etiquetas.get(columna, columna.title())
+              
+                self.label = tk.Label(frame_fila, text=texto_label, width=15,
+                        anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
                 
                 self.campos[columna] = ttk.Entry(
                     frame_fila, font=("Arial", 14, "bold"))
-
                 self.campos[columna].pack(
                     side="left", expand=True, fill="x", padx=15)
-
+            
+                 
             btnMas = tk.Button(self.panel_cuerpo, text="Siguiente", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
                                command=self.siguiente_registro)
             btnMas.pack(side="right", padx=20)
@@ -236,6 +248,7 @@ class FormMaestro(tk.Tk):
                                  command=self.anterior_registro)
             btnMenos.pack(side="right", padx=20)
             hover_event_sup(self, btnMenos)
+
 
             self.mostrar_registro()
             self.crear_tabla()
@@ -251,8 +264,10 @@ class FormMaestro(tk.Tk):
             campo.config(state="normal")
             campo.delete(0, tk.END)
             campo.insert(0, registro_actual[columna])
-            if "id" in columna:
-                campo.config(state="readonly")
+            campo.config(state="readonly")
+
+            
+
 
     def siguiente_registro(self):
         """ Muestra el siguiente registro """
@@ -294,7 +309,7 @@ class FormMaestro(tk.Tk):
 
         # Crear panel para la tabla
         self.panel_tabla = tk.Frame(self.panel_datos, bg="#FFFFFF")
-        self.panel_tabla.place(relwidth=1, relheight=0.25, y=420)
+        self.panel_tabla.place(relwidth=1, height=250, y=410)
 
         ajustar_panel()
 
@@ -321,9 +336,9 @@ class FormMaestro(tk.Tk):
             self.cargarDatosParaActualizar(tipo_boton)
 
 
-    def cargarDatosParaActualizar(self, tipo_boton):
-        self.campos_actualizar = {}
+    def cargarDatosParaActualizar(self, tipo_boton):        
         tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Actualizar {self.titulo_panel_administracion}", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
+        self.campos_actualizar = {}
         if self.titulo_panel_administracion == "Libros":
             crear_cuerpo_actualizar_libros(self, self.campo_selected_table)
         elif self.titulo_panel_administracion == "Autor-Libro":
@@ -352,7 +367,7 @@ class FormMaestro(tk.Tk):
       
     
     def cargarDatosParaInsertar(self, tipo_boton):
-        tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Actualizar {self.titulo_panel_administracion}", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
+        tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Insertar {self.titulo_panel_administracion}", bg=COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
         self.campos_insertar = {}
         dat_filas=datos_llenar_insertar(self, self.titulo_panel_administracion) 
         if "titulo" and "año" and "autor" and "editorial" in dat_filas:
@@ -379,7 +394,7 @@ class FormMaestro(tk.Tk):
 
     """Creacion de la Tabla"""
     def crear_tabla(self):
-        print(self.registros)
+        print(len(self.registros)) 
         self.columnas = list(self.registros[0].keys())
 
         # Crear un estilo para la tabla

@@ -13,13 +13,16 @@ class Libros(BaseORM):
         Obtiene todos los registros de la tabla libros, con nombre completo del autor y el nombre de la editorial.
         """
         consulta = """
-        SELECT libros.id, libros.titulo, libros.anio, CONCAT(autores.nombre, ' ', autores.apellido) AS autor, editoriales.nombre AS editorial
+        SELECT libros.id, libros.titulo, libros.anio, 
+            CONCAT(autores.nombre, ' ', autores.apellido) AS autor, 
+            editoriales.nombre AS editorial
         FROM libros
-        INNER JOIN autor_libro ON libros.id = autor_libro.id_libro
-        INNER JOIN autores ON autor_libro.id_autor = autores.id
-        INNER JOIN editoriales ON libros.id_editorial = editoriales.id
+        LEFT JOIN autor_libro ON libros.id = autor_libro.id_libro
+        LEFT JOIN autores ON autor_libro.id_autor = autores.id
+        LEFT JOIN editoriales ON libros.id_editorial = editoriales.id
         """
         return self.ejecutar_consulta(consulta, fetch=True)
+
 
 
     def listar_Libros(self):

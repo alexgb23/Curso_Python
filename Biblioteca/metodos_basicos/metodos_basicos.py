@@ -42,9 +42,6 @@ def acciones(self, buton, btn_info_sup):
     # Manejo de acciones según el texto del botón
     accion_texto = btn_info_sup["text"]
 
-    if accion_texto == "Prueba":
-        pass
-         
     if accion_texto == "Buscar":
         pass
     elif accion_texto == "Actualizar":
@@ -60,7 +57,6 @@ def acciones(self, buton, btn_info_sup):
             return  # Salir de la función si no hay selección
         self.transicion_paneles_if_true() 
         self.creacion_acciones_cuerpo_datos("Actualizar")
-        # self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
         slide_in(self, self.panel_acciones_cuerpo)
     elif accion_texto == "Insertar":
         if self.titulo_panel_administracion == "Bienvenido a eDe-Lib": 
@@ -70,7 +66,6 @@ def acciones(self, buton, btn_info_sup):
             return
         self.transicion_paneles_if_true()      
         self.creacion_acciones_cuerpo_datos("Insertar")
-        # self.mostrar_panel_Actualizar(self.panel_acciones_cuerpo)
         slide_in(self, self.panel_acciones_cuerpo)
     elif accion_texto == "Eliminar":
         if self.titulo_panel_administracion == "Bienvenido a eDe-Lib": 
@@ -83,9 +78,42 @@ def acciones(self, buton, btn_info_sup):
             messagebox.showinfo(
             "Error", "Seleccione una fila en la tabla para actualizar")
             return  # Salir de la función si no hay selección
-        messagebox.showinfo("Eliminar", "Eliminar")
-    
+        eliminar_registro(self)
+        
 
+def eliminar_registro(self):
+    if self.titulo_panel_administracion == "Libros":
+        libro_eliminado = Libros()
+        respuesta= libro_eliminado.eliminar_registro(self.campo_selected_table["id"])
+        if respuesta is not None:
+            messagebox.showinfo("Informacion","Libro eliminado correctamente")
+        else:
+            messagebox.showerror("Error","Error al eliminar el libro")
+
+    elif self.titulo_panel_administracion == "Editoriales":
+        editorial_eliminada = Editoriales()
+        espuesta= editorial_eliminada.eliminar_registro(self.campo_selected_table["id"])
+        if espuesta is not None:
+            messagebox.showinfo("Informacion","Editorial eliminada correctamente")
+        else:
+            messagebox.showerror("Error","Error al eliminar la editorial")
+
+    elif self.titulo_panel_administracion == "Autores":
+        autor_eliminado = Autores()
+        respuesta= autor_eliminado.eliminar_registro(self.campo_selected_table["id"])
+        if respuesta is not None:
+            messagebox.showinfo("Informacion","Autor eliminado correctamente")
+        else:
+            messagebox.showerror("Error","Error al eliminar el autor")
+    else:
+        AutorLibro = AutorLibro()
+        respuesta= AutorLibro.eliminar_registro(self.campo_selected_table["id"])
+        if respuesta is not None:
+            messagebox.showinfo("Informacion","AutorLibro eliminado correctamente")
+        else:
+            messagebox.showerror("Error","Error al eliminar el AutorLibro")
+        
+        
 
 
 def marcar_boton(self, boton, btn_info, es_superior=False):
@@ -150,6 +178,24 @@ def hover_event_sup(self, boton_sup):
     boton_sup.bind("<Enter>", on_enter)
     boton_sup.bind("<Leave>", on_leave)
 
+    
+
+
+
+
+def hover_event_Exit(self, boton_sup):
+    # Verifica si el botón es el activo para aplicar hover
+    def on_enter(e):
+        if self.boton_activo_sup != boton_sup:  # Evita hover en el botón activo
+            boton_sup.config(bg="yellow",
+                             cursor="hand2", fg="white")
+
+    def on_leave(e):
+        if self.boton_activo_sup != boton_sup:  # Evita restaurar en el botón activo
+            boton_sup.config(bg="pink", fg="white")
+    boton_sup.bind("<Enter>", on_enter)
+    boton_sup.bind("<Leave>", on_leave)
+
     # def toggle(self, ventana):
     #     if self.ventanas.get(ventana) is None:
     #         # Guardar información detallada
@@ -202,15 +248,15 @@ def slide_in(self, ventana, tiempo_espera=800):  # tiempo_espera en milisegundos
 
 
 
-def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
+def acciones_botones_sub_panel(self, tabla, boton):
     if boton['text'] == "Actualizar":
         if tabla == "Libros":
             nuevos_datos = {}
-            id = campos_actualizar["id"].get()
-            titulo = campos_actualizar["titulo"].get()
-            anio = campos_actualizar["anio"].get()           
+            id = self.campos_actualizar["id"].get()
+            titulo = self.campos_actualizar["titulo"].get()
+            anio = self.campos_actualizar["anio"].get()           
             campos_a_buscar = ['nombre']  # Reemplaza con los campos reales de tu tabla
-            cadena_busqueda = campos_actualizar["editorial"].get()  
+            cadena_busqueda = self.campos_actualizar["editorial"].get()  
             edit = Editoriales()
             resul = edit.filtrar(campos_a_buscar, cadena_busqueda)
             id_editorial = resul[0]['id']
@@ -221,14 +267,21 @@ def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
             nuevos_datos['id_editorial'] = id_editorial
             
             libro_actualizar = Libros()
-            libro_actualizar.modificar_registro(id, nuevos_datos)
+            resultado=libro_actualizar.modificar_registro(id, nuevos_datos)
+
+            if resultado is not None:
+                messagebox.showinfo("Informacion","Libro actualizado correctamente")
+            else:
+                messagebox.showerror("Error","Error al actualizar el libro")
+
+            return
         
         elif tabla == "Autores":
             nuevos_datos = {}
-            id = campos_actualizar["id"].get()
-            nombre = campos_actualizar["nombre"].get()
-            apellido = campos_actualizar["apellido"].get()
-            nacionalidad = campos_actualizar["nacionalidad"].get()
+            id = self.campos_actualizar["id"].get()
+            nombre = self.campos_actualizar["nombre"].get()
+            apellido = self.campos_actualizar["apellido"].get()
+            nacionalidad = self.campos_actualizar["nacionalidad"].get()
 
             # Asignar los datos al diccionario, excluyendo el ID
             nuevos_datos['nombre'] = nombre
@@ -236,14 +289,21 @@ def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
             nuevos_datos['nacionalidad'] = nacionalidad
 
             autores= Autores()
-            autores.modificar_registro(id, nuevos_datos)
+            resultado=autores.modificar_registro(id, nuevos_datos)
+
+            if resultado is not None:
+                messagebox.showinfo("Informacion", "Autor actualizado correctamente")
+            else:
+                messagebox.showerror("Error" ,"Error al actualizar el Autor")
+
+            return
 
         elif tabla == "Editoriales":
             nuevos_datos = {}
-            id = campos_actualizar["id"].get()
-            nombre = campos_actualizar["nombre"].get()
-            direccion = campos_actualizar["direccion"].get()
-            telefono = campos_actualizar["telefono"].get()
+            id = self.campos_actualizar["id"].get()
+            nombre = self.campos_actualizar["nombre"].get()
+            direccion = self.campos_actualizar["direccion"].get()
+            telefono = self.campos_actualizar["telefono"].get()
 
             # Asignar los datos al diccionario, excluyendo el ID
             nuevos_datos['nombre'] = nombre
@@ -251,20 +311,27 @@ def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
             nuevos_datos['pais'] = telefono
 
             editoriales = Editoriales()
-            editoriales.modificar_registro(id, nuevos_datos)
+            resultado=editoriales.modificar_registro(id, nuevos_datos)
+
+            if resultado is not None:
+                messagebox.showinfo("Informacion","Editorial actualizada correctamente")
+            else:
+                messagebox.showerror("Error","Error al actualizar la Editorial")
+
+            return
 
         elif tabla == "Autor-Libro":
             nuevos_datos = {}
 
-
-##############################################Aqui quedo po hoy
+            return
+        
     if boton['text'] == "Insertar":
         if tabla == "Libros":
             nuevos_datos = {}
-            titulo = campos_actualizar["titulo"].get()
-            anio = campos_actualizar["anio"].get()           
+            titulo = self.campos_insertar["titulo"].get()
+            anio = self.campos_insertar["año"].get()           
             campos_a_buscar = ['nombre']  # Reemplaza con los campos reales de tu tabla
-            cadena_busqueda = campos_actualizar["editorial"].get()  
+            cadena_busqueda = self.campos_insertar["editorial"].get()  
             edit = Editoriales()
             resul = edit.filtrar(campos_a_buscar, cadena_busqueda)
             id_editorial = resul[0]['id']
@@ -274,15 +341,65 @@ def acciones_botones_panel_top(self, campos_actualizar, tabla, boton):
             nuevos_datos['anio'] = anio
             nuevos_datos['id_editorial'] = id_editorial
             
-            libros = Libros()
-            libros.crear_registro(nuevos_datos)
+            nuevo_libro = Libros()
+            resultado=nuevo_libro.crear_registro(nuevos_datos)
+
+            if resultado is not None:
+                messagebox.showinfo("Informacion", f"Libro creado correctamente con id: {resultado}")
+            else:
+                messagebox.showerror("Error","Error al crear el libro")
+
+            return
+
+        elif tabla == "Autores":
+            nuevos_datos = {}
+            nombre = self.campos_insertar["nombre"].get()
+            apellido = self.campos_insertar["apellido"].get()
+            nacionalidad = self.campos_insertar["nacionalidad"].get()
+
+            # Asignar los datos al diccionario, excluyendo el ID
+            nuevos_datos['nombre'] = nombre
+            nuevos_datos['apellido'] = apellido
+            nuevos_datos['nacionalidad'] = nacionalidad
+
+            nuevo_autor = Autores()
+            resultado=nuevo_autor.crear_registro(nuevos_datos)
+
+            if resultado is not None:
+                messagebox.showinfo("Informacion", f"Autor creado correctamente con id: {resultado}")
+            else:
+                messagebox.showerror("Error", "Error al crear el autor")
+
+            return
             
+        elif tabla == "Editoriales":
+            nuevos_datos = {}
+            nombre = self.campos_insertar["nombre"].get()
+            ciudad = self.campos_insertar["ciudad"].get()
+            pais = self.campos_insertar["pais"].get()
+
+            # Asignar los datos al diccionario, excluyendo el ID
+            nuevos_datos['nombre'] = nombre
+            nuevos_datos['ciudad'] = ciudad
+            nuevos_datos['pais'] = pais
+
+            nueva_editorial = Editoriales()
+            resultado=nueva_editorial.crear_registro(nuevos_datos)
+
+            if resultado is not None:
+                messagebox.showinfo("Informacion", f"Editorial creada correctamente con id: {resultado}")
+            else:
+                messagebox.showerror("Error", "Error al crear la editorial")
+
+            return
+
+        elif tabla == "Autor-Libro":
+            nuevos_datos = {}
+
+            return
+
+  
             
-
-
-    
-
-
 
 
 def instanciar(self, clase):
@@ -290,6 +407,7 @@ def instanciar(self, clase):
     self.campo_selected_table = {}
     if clase == "Libros":
         try:
+            self.registros = None
             libros = Libros()
             self.registros = libros.libros_con_autor_y_editorial
             self.indice_actual = 0
@@ -299,6 +417,7 @@ def instanciar(self, clase):
             print(f"Error al instanciar libros: {e}")
     elif clase == "Autores":
         try:
+            self.registros = None
             autores = Autores()
             self.registros = autores.autores
             self.indice_actual = 0
@@ -308,6 +427,7 @@ def instanciar(self, clase):
             print(f"Error al instanciar autores: {e}")
     elif clase == "Editoriales":
         try:
+            self.registros = None
             editoriales = Editoriales()
             self.registros = editoriales.editoriales
             self.indice_actual = 0
@@ -317,6 +437,7 @@ def instanciar(self, clase):
             print(f"Error al instanciar editoriales: {e}")
     elif clase == "Autor-Libro":
         try:
+            self.registros = None
             autorlibro = AutorLibro()
             self.registros = autorlibro.autorlibrocompleto
             self.indice_actual = 0
@@ -350,8 +471,8 @@ def crear_boton_sub_panel(self, tipo_boton):
         bg=COLOR_BTN,
         font=("Arial", 12, "bold"),
         fg="white",
-        command=lambda: acciones_botones_panel_top(
-            self, self.campos_actualizar, self.titulo_panel_administracion, buton)
+        command=lambda: acciones_botones_sub_panel(
+            self, self.titulo_panel_administracion, buton)
     )
 
     # Empaquetar el botón
@@ -458,7 +579,6 @@ def crear_cuerpo_actualizar_libros(self,dat_filas):
             self.campos_actualizar[columna].config(state="readonly", fg="darkgrey")
 
 def crear_cuerpo_actualizar_autor_libro(self,dat_filas):  
-    print(dat_filas)
     self.campos_actualizar = {}
     for columna, value in dat_filas.items():
         frame_fila = tk.Frame(

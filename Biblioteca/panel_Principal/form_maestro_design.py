@@ -309,7 +309,7 @@ class FormMaestro(tk.Tk):
 
         # Crear panel para la tabla
         self.panel_tabla = tk.Frame(self.panel_datos, bg="#FFFFFF")
-        self.panel_tabla.place(relwidth=1, height=250, y=410)
+        self.panel_tabla.place(relwidth=1, height=270, y=410)
 
         ajustar_panel()
 

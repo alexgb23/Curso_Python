@@ -6,6 +6,7 @@ from clases.autores import Autores
 from clases.autorlibro import AutorLibro
 
 
+
 #metodo para asocial diferentes metodos llamado al hacer clic en cualquier boton del menu lateral
 def instanciar_y_marcar(self, boton, btn_info):
     # Llama a los métodos deseados
@@ -57,7 +58,8 @@ def instanciar(self, clase):
             crear_panel_admin.cargarDatos(self)
         except Exception as e:
             print(f"Error al instanciar autorlibro: {e}")
+
     elif clase == "Inicio":
-        self.cargarDatos("Inicio")
+        crear_panel_admin.cargarDatos(self,"Inicio")
     else:
         print("No se encontró la clase")

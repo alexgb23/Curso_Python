@@ -5,6 +5,7 @@ from clases.autores import Autores
 import modulos.botones.btn_selected as btn_selected
 from tkinter import messagebox
 import modulos.efectos_visuales.transisiones as transition
+import modulos.ejecucion_click.click_btn_menu_lateral as click_btn_menu_lateral
 
   
 def acciones(self, buton, btn_info_sup):
@@ -50,6 +51,7 @@ def acciones(self, buton, btn_info_sup):
             "Error", "Seleccione una fila en la tabla para actualizar")
             return  # Salir de la función si no hay selección
         eliminar_registro(self)
+       
         
 
 def eliminar_registro(self):
@@ -60,6 +62,7 @@ def eliminar_registro(self):
             messagebox.showinfo("Informacion","Libro eliminado correctamente")
         else:
             messagebox.showerror("Error","Error al eliminar el libro")
+        click_btn_menu_lateral.instanciar(self, "Libros")
 
     elif self.titulo_panel_administracion == "Editoriales":
         editorial_eliminada = Editoriales()
@@ -68,6 +71,7 @@ def eliminar_registro(self):
             messagebox.showinfo("Informacion","Editorial eliminada correctamente")
         else:
             messagebox.showerror("Error","Error al eliminar la editorial")
+        click_btn_menu_lateral.instanciar(self, "Editoriales")
 
     elif self.titulo_panel_administracion == "Autores":
         autor_eliminado = Autores()
@@ -76,6 +80,7 @@ def eliminar_registro(self):
             messagebox.showinfo("Informacion","Autor eliminado correctamente")
         else:
             messagebox.showerror("Error","Error al eliminar el autor")
+        click_btn_menu_lateral.instanciar(self, "Autores")
     else:
         AutorLibro = AutorLibro()
         respuesta= AutorLibro.eliminar_registro(self.campo_selected_table["id"])
@@ -83,4 +88,5 @@ def eliminar_registro(self):
             messagebox.showinfo("Informacion","AutorLibro eliminado correctamente")
         else:
             messagebox.showerror("Error","Error al eliminar el AutorLibro")
+        click_btn_menu_lateral.instanciar(self, "AutorLibro")
         

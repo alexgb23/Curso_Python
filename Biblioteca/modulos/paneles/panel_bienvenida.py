@@ -2,6 +2,7 @@ from tkinter import ttk
 import tkinter as tk
 import config.config as colores
 
+
 def crear_panel_bienvenida(self):
         self.titulo_panel_administracion = "Bienvenido a eDe-Lib"
         

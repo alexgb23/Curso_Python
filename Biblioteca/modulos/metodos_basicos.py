@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from panel_Principal.form_maestro_design import *
+# from panel_Principal.form_maestro_design import *
 from tkinter import messagebox
 import modulos.botones.btn_selected as btn_selected
 from clases.libros import Libros
@@ -9,6 +9,7 @@ from clases.autores import Autores
 from clases.autorlibro import AutorLibro
 from config.config import COLOR_BARRA_SUPERIOR, COLOR_MENU_LATERAL, COLOR_CUERPO_PRINCIPAL, COLOR_MENU_CURSOR_ENCIMA, COLOR_PANEL_INFO, COLOR_CABECERA_TABLA, COLOR_BTN
 import modulos.efectos_visuales.transisiones as transition
+import modulos.paneles.crear_panel_admin as crear_panel_admin
 
 
 
@@ -96,18 +97,6 @@ def eliminar_registro(self):
         else:
             messagebox.showerror("Error","Error al eliminar el AutorLibro")
         
-
-    # def toggle(self, ventana):
-    #     if self.ventanas.get(ventana) is None:
-    #         # Guardar información detallada
-    #         self.ventanas[ventana] = self.get_window_details(ventana)
-
-    #     if self.visible:
-    #         self.slide_out(ventana)
-    #     else:
-    #         self.slide_in(ventana)
-
-
 
 
 def acciones_botones_sub_panel(self, tabla, boton):
@@ -261,9 +250,6 @@ def acciones_botones_sub_panel(self, tabla, boton):
             return
 
   
-            
-
-
 def instanciar(self, clase):
     btn_selected.reset_btn_sup(self)
     self.campo_selected_table = {}
@@ -274,7 +260,7 @@ def instanciar(self, clase):
             self.registros = libros.libros_con_autor_y_editorial
             self.indice_actual = 0
             self.titulo_panel_administracion = "Libros"
-            self.cargarDatos()
+            crear_panel_admin.cargarDatos(self)
         except Exception as e:
             print(f"Error al instanciar libros: {e}")
     elif clase == "Autores":
@@ -284,7 +270,7 @@ def instanciar(self, clase):
             self.registros = autores.autores
             self.indice_actual = 0
             self.titulo_panel_administracion = "Autores"
-            self.cargarDatos()
+            crear_panel_admin.cargarDatos(self)
         except Exception as e:
             print(f"Error al instanciar autores: {e}")
     elif clase == "Editoriales":
@@ -294,7 +280,7 @@ def instanciar(self, clase):
             self.registros = editoriales.editoriales
             self.indice_actual = 0
             self.titulo_panel_administracion = "Editoriales"
-            self.cargarDatos()
+            crear_panel_admin.cargarDatos(self)
         except Exception as e:
             print(f"Error al instanciar editoriales: {e}")
     elif clase == "Autor-Libro":
@@ -304,7 +290,7 @@ def instanciar(self, clase):
             self.registros = autorlibro.autor_libros
             self.indice_actual = 0
             self.titulo_panel_administracion = "Autor-Libro"
-            self.cargarDatos()
+            crear_panel_admin.cargarDatos(self)
         except Exception as e:
             print(f"Error al instanciar autorlibro: {e}")
     elif clase == "Inicio":

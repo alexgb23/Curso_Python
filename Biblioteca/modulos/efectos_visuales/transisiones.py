@@ -37,3 +37,15 @@ def slide_in(self, ventana, tiempo_espera=800):  # tiempo_espera en milisegundos
 
     # Esperar antes de iniciar el movimiento
     self.after(tiempo_espera, mover_ventana, 0)
+
+
+## Efecto de mostrar ocultar panel al hacer clic a un boton
+    # def toggle(self, ventana):
+    #     if self.ventanas.get(ventana) is None:
+    #         # Guardar información detallada
+    #         self.ventanas[ventana] = self.get_window_details(ventana)
+
+    #     if self.visible:
+    #         self.slide_out(ventana)
+    #     else:
+    #         self.slide_in(ventana)

@@ -26,5 +26,4 @@ def crear_panel_bienvenida(self):
                                     foreground=COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 16, "bold"))
         self.label_info.place(relx=0.5, y=80, anchor="n")
 
-    #Metodo de redimensionamiento de imagen de fondo del panel de Biencenida
-    #necesario en esta clase para que funcione
+

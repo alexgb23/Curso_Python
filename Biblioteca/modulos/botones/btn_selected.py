@@ -1,5 +1,4 @@
 from panel_Principal.form_maestro_design import *
-import modulos.botones.btn_hover as btn_hover
 from modulos.metodos_basicos import *
 
 def marcar_boton(self, boton, btn_info, es_superior=False):

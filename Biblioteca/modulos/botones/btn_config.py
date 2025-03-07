@@ -1,15 +1,16 @@
 from panel_Principal.form_maestro_design import *
 import modulos.botones.btn_hover as btn_hover
 from modulos.metodos_basicos import *
+from tkinter import font
 
-def configuracion_btn_menu_lateral(self, boton, text, icono, font_awesome, ancho_boton, alto_boton, activo):
+def configuracion_btn_menu_lateral(self, boton, text, icono, activo):
     """Configura los parámetros del botón en el menú lateral."""
     boton.config(
         text=f" {icono}  {text}",
         anchor="w",
-        font=font_awesome,
-        width=ancho_boton,
-        height=alto_boton,
+        font=font.Font(family="FontAwesome", size=15),
+        width=20,
+        height=1,
         pady=5,
         bg=COLOR_BTN,
         fg="white",
@@ -26,14 +27,14 @@ def configuracion_btn_menu_lateral(self, boton, text, icono, font_awesome, ancho
         self.boton_activo = boton
 
 
-def configuracion_btn_menu_superior(self, boton, text, icono, font_awesome, ancho_boton, alto_boton, activo):
+def configuracion_btn_menu_superior(self, boton, text, icono, activo):
     """Configura los parámetros del botón en el menú superior."""
     boton.config(
         text=f" {icono}  {text}",
         anchor="w",
-        font=font_awesome,
-        width=ancho_boton,
-        height=alto_boton,
+        font= font.Font(family="FontAwesome", size=12),
+        width=15,
+        height=1,
         pady=5,
         bg=COLOR_BTN,
         fg="white",

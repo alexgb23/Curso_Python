@@ -11,7 +11,11 @@ import modulos.paneles.panel_bienvenida as panel_bienvenida
 import modulos.paneles.subpanel_actualizar as cargarPanelActualizar
 import modulos.paneles.subpanel_insertar as cargarPanelInsertar
 import modulos.efectos_visuales.transisiones as transition
+import modulos.ejecucion_click.click_btn_menu_lateral as click_btn_menu_lateral
+import modulos.ejecucion_click.click_btn_menu_sup as click_btn_menu_sup
 from modulos.metodos_basicos import *
+
+
 
 class FormMaestro(tk.Tk):
     def __init__(self):
@@ -72,7 +76,7 @@ class FormMaestro(tk.Tk):
         for btn in self.btn_info:
             boton = tk.Button(self.menu_lateral)
             btn_config.configuracion_btn_menu_lateral(self, boton, btn["text"], btn["icon"], btn["activo"])
-            boton.config(command=lambda b=boton, btn=btn: instanciar_y_marcar(self, b, btn))
+            boton.config(command=lambda b=boton, btn=btn: click_btn_menu_lateral.instanciar_y_marcar(self, b, btn))
 
             # Marcar el botón Inicio cuando carga el programa tpmndo como parametro si el titulo del panel es Bienvenido a eDe-Lib
             if btn["text"] == "Inicio" and not self.titulo_panel_administracion:
@@ -96,7 +100,7 @@ class FormMaestro(tk.Tk):
         for btn in self.btn_info_sup:
             but = tk.Button(self.barra_superior)
             btn_config.configuracion_btn_menu_superior(self, but, btn["text"], btn["icon"], btn["activo"])
-            but.config(command=lambda b=but, btn=btn: acciones(self, b, btn))  # Asigna el comando
+            but.config(command=lambda b=but, btn=btn: click_btn_menu_sup.acciones(self, b, btn))  # Asigna el comando
 
         # Configura el evento hover para el botón de salida el cual se encuentra en el modulo btn_hover    
         btn_hover.hover_event_Exit(self, self.salir)

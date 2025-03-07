@@ -1,4 +1,6 @@
-from panel_Principal.form_maestro_design import *
+from tkinter import ttk
+import tkinter as tk
+import config.config as config
 
 def crear_panel_bienvenida(self):
         self.titulo_panel_administracion = "Bienvenido a eDe-Lib"
@@ -12,6 +14,7 @@ def crear_panel_bienvenida(self):
         self.canvas.place(relwidth=1, relheight=1)
 
         # Llamar a redimensionar_imagen para cargar la imagen inicialmente
+        #el metodo redimensionamiento de la imagen de fondo se encuentra en form_maestro 
         self.redimensionar_imagen_fondo_panel_bienvenida()
 
         # Vincular el evento de redimensionamiento 
@@ -19,11 +22,13 @@ def crear_panel_bienvenida(self):
 
         # Crear el Label con texto
         self.label_inicio = ttk.Label(self.canvas, text=self.titulo_panel_administracion,
-                                    foreground=COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 36, "bold"))
+                                    foreground=config.COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 36, "bold"))
         self.label_inicio.place(relx=0.5, y=15, anchor="n")
 
         self.label_info= ttk.Label(self.canvas, text="Plataforma de gestión de bibliotecas",
-                                    foreground=COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 16, "bold"))
+                                    foreground=config.COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 16, "bold"))
         self.label_info.place(relx=0.5, y=80, anchor="n")
+
+       
 
 

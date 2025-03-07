@@ -2,6 +2,7 @@ from panel_Principal.form_maestro_design import *
 import modulos.botones.btn_hover as btn_hover
 from modulos.metodos_basicos import *
 from tkinter import font
+import modulos.ejecucion_click.introducir_en_BBD as ejecutar
 
 def configuracion_btn_menu_lateral(self, boton, text, icono, activo):
     """Configura los parámetros del botón en el menú lateral."""
@@ -66,8 +67,11 @@ def crear_boton_sub_panel(self, tipo_boton):
         bg=COLOR_BTN,
         font=("Arial", 12, "bold"),
         fg="white",
-        command=lambda: acciones_botones_sub_panel(
-            self, self.titulo_panel_administracion, boton)
+        
+        #este metodo se ejecutara cuando se presione el boton
+        #Necesario aquiya que los botones se crean automaticamente
+        command=lambda: ejecutar.acciones_botones_sub_panel(
+            self, self.titulo_panel_administracion, boton)  
     )
 
     # Empaquetar el botón

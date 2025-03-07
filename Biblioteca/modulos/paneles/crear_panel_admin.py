@@ -6,28 +6,36 @@ import modulos.botones.btn_acciones as btn_acciones
 from config.config import COLOR_PANEL_INFO, COLOR_BTN
 
 
+# este metodo se encarga de cargar los datos cuando se hace click en uno de los botones laterales 
+# llenando el panel cuerpo donde estan los botones mas y menos para ir visualizando los elementos
+# ademas llama a mostrar registro y crea la tabla 
 
 def cargarDatos(self, quepanel=None):
     # Esto lo hago para si clican en inicio al cargar el panel no se rompa el programa
     if quepanel == "Inicio" and self.titulo_panel_administracion != "Bienvenido a eDe-Lib":
         self.panel_datos.pack_forget()
         self.crear_panel_bienvenida()
+
     elif quepanel == "Inicio" and self.titulo_panel_administracion == "Bienvenido a eDe-Lib":
         return
+    
     else:
         self.panel_inicio.pack_forget()
         self.creacion_cuerpo_datos()
         self.campos = {}
         self.columnas = list(self.registros[0].keys())
+
           # Diccionario para mapear columnas a sus etiquetas
         etiquetas = {
         "anio": "Año"
         }
         
         for columna in self.columnas:
+
             # Contenedor de cada fila (etiqueta + campo)
             frame_fila = tk.Frame(self.panel_cuerpo, bg=COLOR_PANEL_INFO)
             frame_fila.pack(pady=10, fill="x")
+
              # Obtener la etiqueta correspondiente, o usar la columna en sí
             texto_label = etiquetas.get(columna, columna.title())
           
@@ -48,6 +56,7 @@ def cargarDatos(self, quepanel=None):
                              command= lambda: btn_acciones.anterior_registro(self))
         btnMenos.pack(side="right", padx=20)
         btn_hover.hover_event_sup(self, btnMenos)
+
         mostrar_registro(self)
         tabla.crear_tabla(self)
 

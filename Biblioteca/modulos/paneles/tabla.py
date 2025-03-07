@@ -1,4 +1,5 @@
 from panel_Principal.form_maestro_design import *
+import config.config as btn_config
 
 """Creacion de la Tabla"""
 def crear_tabla(self):
@@ -6,11 +7,11 @@ def crear_tabla(self):
 
     # Crear un estilo para la tabla
     style = ttk.Style()
-    style.configure("Heading", background=COLOR_CABECERA_TABLA)
+    style.configure("Heading", background=btn_config.COLOR_CABECERA_TABLA)
     style.configure("Treeview.Heading", font=(
         "Arial", 14, "bold"))  # Cabeceras en 14 bold
     style.configure("Treeview", font=("Arial", 12),
-                    background=COLOR_PANEL_INFO)  # Contenido en 12
+                    background=btn_config.COLOR_PANEL_INFO)  # Contenido en 12
     
     # Crear la tabla
     self.tabla = ttk.Treeview(

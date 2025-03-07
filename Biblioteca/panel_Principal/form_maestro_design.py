@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-from config.config import (COLOR_BARRA_SUPERIOR,COLOR_MENU_LATERAL,COLOR_CUERPO_PRINCIPAL, COLOR_PANEL_INFO,COLOR_MENU_CURSOR_ENCIMA, COLOR_CABECERA_TABLA,COLOR_BTN)
 import util.util_ventana as util_ventana
 import util.util_imagenes as util_img
+from config.config import *
 import modulos.botones.btn_config as btn_config
 import modulos.botones.btn_hover as btn_hover
 import modulos.datos.definir_btns as definir_btns
@@ -13,7 +13,7 @@ import modulos.paneles.subpanel_insertar as cargarPanelInsertar
 import modulos.efectos_visuales.transisiones as transition
 import modulos.ejecucion_click.click_btn_menu_lateral as click_btn_menu_lateral
 import modulos.ejecucion_click.click_btn_menu_sup as click_btn_menu_sup
-from modulos.metodos_basicos import *
+
 
 
 

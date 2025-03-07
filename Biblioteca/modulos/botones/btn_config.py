@@ -1,8 +1,8 @@
 from panel_Principal.form_maestro_design import *
 import modulos.botones.btn_hover as btn_hover
-from modulos.metodos_basicos import *
+import modulos.botones.btn_config as btn_config
 from tkinter import font
-import modulos.ejecucion_click.introducir_en_BBD as ejecutar
+import modulos.ejecucion_click.click_btn_insertData_BD as ejecutar
 
 def configuracion_btn_menu_lateral(self, boton, text, icono, activo):
     """Configura los parámetros del botón en el menú lateral."""
@@ -13,12 +13,12 @@ def configuracion_btn_menu_lateral(self, boton, text, icono, activo):
         width=20,
         height=1,
         pady=5,
-        bg=COLOR_BTN,
+        bg=btn_config.COLOR_BTN,
         fg="white",
         bd=1,
         relief="raised",
-        highlightbackground=COLOR_MENU_LATERAL,
-        highlightcolor=COLOR_MENU_LATERAL,
+        highlightbackground=btn_config.COLOR_MENU_LATERAL,
+        highlightcolor=btn_config.COLOR_MENU_LATERAL,
         highlightthickness=2
     )
     boton.pack(side=tk.TOP, pady=8)
@@ -37,12 +37,12 @@ def configuracion_btn_menu_superior(self, boton, text, icono, activo):
         width=15,
         height=1,
         pady=5,
-        bg=COLOR_BTN,
+        bg=btn_config.COLOR_BTN,
         fg="white",
         bd=1,
         relief="raised",
-        highlightbackground=COLOR_BARRA_SUPERIOR,
-        highlightcolor=COLOR_BARRA_SUPERIOR,
+        highlightbackground=btn_config.COLOR_BARRA_SUPERIOR,
+        highlightcolor=btn_config.COLOR_BARRA_SUPERIOR,
         highlightthickness=2
     )
     boton.pack(side=tk.RIGHT, padx=15)
@@ -64,7 +64,7 @@ def crear_boton_sub_panel(self, tipo_boton):
         self.panel_acciones_cuerpo,
         text=texto,
         padx=20,
-        bg=COLOR_BTN,
+        bg=btn_config.COLOR_BTN,
         font=("Arial", 12, "bold"),
         fg="white",
         

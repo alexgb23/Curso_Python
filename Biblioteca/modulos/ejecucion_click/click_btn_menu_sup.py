@@ -2,7 +2,6 @@
 from clases.libros import Libros
 from clases.editoriales import Editoriales
 from clases.autores import Autores
-from clases.autorlibro import AutorLibro
 import modulos.botones.btn_selected as btn_selected
 from tkinter import messagebox
 import modulos.efectos_visuales.transisiones as transition

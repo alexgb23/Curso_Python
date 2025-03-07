@@ -1,6 +1,6 @@
 from tkinter import ttk
 import tkinter as tk
-import modulos.botones.btn_config as btn_config
+import config.config as colores
 from clases.libros import Libros
 from clases.autores import Autores
 
@@ -9,10 +9,10 @@ def crear_cuerpo_panel_actualizar_autor_libro(self,dat_filas):
     self.campos_actualizar = {}
     for columna, value in dat_filas.items():
         frame_fila = tk.Frame(
-            self.panel_acciones_cuerpo, bg=btn_config.COLOR_PANEL_INFO)
+            self.panel_acciones_cuerpo, bg=colores.COLOR_PANEL_INFO)
         frame_fila.pack(pady=10, fill="x")
         tk.Label(frame_fila, text=columna, width=15,
-                 anchor="w", font=("Arial", 14, "bold"), bg=btn_config.COLOR_PANEL_INFO).pack(side="left", padx=5)
+                 anchor="w", font=("Arial", 14, "bold"), bg=colores.COLOR_PANEL_INFO).pack(side="left", padx=5)
         if columna=="libro":
             libros = Libros()
             self.librosNombres = [

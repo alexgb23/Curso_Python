@@ -1,12 +1,13 @@
 import tkinter as tk
 import modulos.botones.btn_config as btn_config
+import config.config as colores
 import modulos.paneles.ccp_actualizar_libro as actualizar_libro
 import modulos.paneles.ccp_actualizar_autorlibro as actualizar_autorlibro
 
 
 def cargarDatosParaActualizar(self, tipo_boton):  
     #titulo del panel      
-    tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Actualizar {self.titulo_panel_administracion}", bg=btn_config.COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
+    tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Actualizar {self.titulo_panel_administracion}", bg=colores.COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
     self.campos_actualizar = {}
 
     #condicion para el tipo de panel que se va a crear dependiendo si es Libros o Autor-Libro
@@ -20,11 +21,11 @@ def cargarDatosParaActualizar(self, tipo_boton):
        for columna, value in self.campo_selected_table.items():
 
         frame_fila = tk.Frame(
-            self.panel_acciones_cuerpo, bg=btn_config.COLOR_PANEL_INFO)
+            self.panel_acciones_cuerpo, bg=colores.COLOR_PANEL_INFO)
         frame_fila.pack(pady=10, fill="x")
 
         tk.Label(frame_fila, text=columna, width=15,
-                 anchor="w", font=("Arial", 14, "bold"), bg=btn_config.COLOR_PANEL_INFO).pack(side="left", padx=5)
+                 anchor="w", font=("Arial", 14, "bold"), bg=colores.COLOR_PANEL_INFO).pack(side="left", padx=5)
         
         self.campos_actualizar[columna] = tk.Entry(
             frame_fila, font=("Arial", 14, "bold"))

@@ -1,6 +1,6 @@
 from tkinter import ttk
 import tkinter as tk
-import config.config as config
+import config.config as colores
 
 def crear_panel_bienvenida(self):
         self.titulo_panel_administracion = "Bienvenido a eDe-Lib"
@@ -22,11 +22,11 @@ def crear_panel_bienvenida(self):
 
         # Crear el Label con texto
         self.label_inicio = ttk.Label(self.canvas, text=self.titulo_panel_administracion,
-                                    foreground=config.COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 36, "bold"))
+                                    foreground=colores.COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 36, "bold"))
         self.label_inicio.place(relx=0.5, y=15, anchor="n")
 
         self.label_info= ttk.Label(self.canvas, text="Plataforma de gestión de bibliotecas",
-                                    foreground=config.COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 16, "bold"))
+                                    foreground=colores.COLOR_MENU_CURSOR_ENCIMA, font=("Arial", 16, "bold"))
         self.label_info.place(relx=0.5, y=80, anchor="n")
 
        

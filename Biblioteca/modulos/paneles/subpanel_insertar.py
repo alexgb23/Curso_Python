@@ -1,5 +1,6 @@
 import tkinter as tk
 import modulos.botones.btn_config as btn_config
+import config.config as colores
 import modulos.datos.datos_para_insertar as insert_data
 import modulos.paneles.ccp_insertar_libro as insertar_libro
 import modulos.paneles.ccp_insertar_autorlibro as insertar_autorlibro
@@ -7,7 +8,7 @@ import modulos.paneles.ccp_insertar_autorlibro as insertar_autorlibro
 
 def cargarDatosParaInsertar(self, tipo_boton):
     #titulo del panel 
-    tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Insertar {self.titulo_panel_administracion}", bg=btn_config.COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
+    tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Insertar {self.titulo_panel_administracion}", bg=colores.COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
     self.campos_insertar = {}
 
     #buscar los datos a insertar en el panel y aplicar la condicion dependiendo de los datos
@@ -24,11 +25,11 @@ def cargarDatosParaInsertar(self, tipo_boton):
         for columna in dat_filas:
 
             frame_fila = tk.Frame(
-                self.panel_acciones_cuerpo, bg=btn_config.COLOR_PANEL_INFO)
+                self.panel_acciones_cuerpo, bg=colores.COLOR_PANEL_INFO)
             frame_fila.pack(pady=10, fill="x")
 
             tk.Label(frame_fila, text=columna, width=15,
-                    anchor="w", font=("Arial", 14, "bold"), bg=btn_config.COLOR_PANEL_INFO).pack(side="left", padx=5)
+                    anchor="w", font=("Arial", 14, "bold"), bg=colores.COLOR_PANEL_INFO).pack(side="left", padx=5)
             
             self.campos_insertar[columna] = tk.Entry(
                     frame_fila, font=("Arial", 14, "bold"))

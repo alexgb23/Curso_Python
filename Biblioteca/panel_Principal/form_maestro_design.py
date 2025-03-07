@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import util.util_ventana as util_ventana
 import util.util_imagenes as util_img
-from config.config import *
+import config.config as colores
 import modulos.botones.btn_config as btn_config
 import modulos.botones.btn_hover as btn_hover
 import modulos.datos.definir_btns as definir_btns
@@ -55,19 +55,19 @@ class FormMaestro(tk.Tk):
 
     # Crear los frames que maquetan la ventana, el frame lateral, el frame superior y el cuerpo
     def crear_frames(self):
-        self.menu_lateral = tk.Frame(self, bg=COLOR_MENU_LATERAL, width=300)
+        self.menu_lateral = tk.Frame(self, bg=colores.COLOR_MENU_LATERAL, width=300)
         self.menu_lateral.pack(side=tk.LEFT, fill=tk.Y)
 
-        self.barra_superior = tk.Frame(self, bg=COLOR_BARRA_SUPERIOR, height=200)
+        self.barra_superior = tk.Frame(self, bg=colores.COLOR_BARRA_SUPERIOR, height=200)
         self.barra_superior.pack(side=tk.TOP, fill=tk.X)
 
-        self.cuerpo_principal = tk.Frame(self, bg=COLOR_CUERPO_PRINCIPAL)
+        self.cuerpo_principal = tk.Frame(self, bg=colores.COLOR_CUERPO_PRINCIPAL)
         self.cuerpo_principal.pack(side=tk.RIGHT, fill="both", expand=True)
 
     # Crear el menu lateral
     def crear_menu_lateral(self):
         # label que encapsula el logo que es una imagen previamente cargada la cual es self.perfil
-        self.labelLogo = tk.Label(self.menu_lateral, image=self.perfil, bg=COLOR_MENU_LATERAL)
+        self.labelLogo = tk.Label(self.menu_lateral, image=self.perfil, bg=colores.COLOR_MENU_LATERAL)
         self.labelLogo.pack(side=tk.TOP, pady=10, padx=10, expand=False)
 
         # Crear los botones del menu lateral recorriendo la lista, aplicandoles una configuración personalizada
@@ -86,7 +86,7 @@ class FormMaestro(tk.Tk):
     def crear_barra_superior(self):
         # Titulo del panel superior
         self.labelTitulo = tk.Label(self.barra_superior, text="¡Bienvenido!")
-        self.labelTitulo.config(fg="white", font=("Time New Roman", 24, "bold"), bg=COLOR_BARRA_SUPERIOR, padx=10, pady=16)
+        self.labelTitulo.config(fg="white", font=("Time New Roman", 24, "bold"), bg=colores.COLOR_BARRA_SUPERIOR, padx=10, pady=16)
         self.labelTitulo.pack(side=tk.LEFT, padx=15)
 
         # crear boton salir, el cual tiene el metodo de destruir la ventana cuando se presiona
@@ -109,10 +109,10 @@ class FormMaestro(tk.Tk):
         panel_bienvenida.crear_panel_bienvenida(self)
 
     def creacion_cuerpo_datos(self):
-        self.panel_datos = tk.Frame(self.cuerpo_principal, bg=COLOR_CUERPO_PRINCIPAL)
+        self.panel_datos = tk.Frame(self.cuerpo_principal, bg=colores.COLOR_CUERPO_PRINCIPAL)
         self.panel_datos.place(relwidth=1, relheight=1)
 
-        self.panel_cuerpo = tk.Frame(self.panel_datos, bg=COLOR_PANEL_INFO)
+        self.panel_cuerpo = tk.Frame(self.panel_datos, bg=colores.COLOR_PANEL_INFO)
 
         # Metodo para centrar el panel_cuerpo
         def ajustar_panel():
@@ -124,7 +124,7 @@ class FormMaestro(tk.Tk):
         self.panel_datos.bind("<Configure>", lambda event: ajustar_panel())
 
         tk.Label(self.panel_datos, text=f"Panel de Administración de {self.titulo_panel_administracion}",
-                 bg=COLOR_CUERPO_PRINCIPAL, fg=COLOR_BARRA_SUPERIOR, font=("Arial", 30, "bold")).place(relx=0.5, y=10, anchor="n")
+                 bg=colores.COLOR_CUERPO_PRINCIPAL, fg=colores.COLOR_BARRA_SUPERIOR, font=("Arial", 30, "bold")).place(relx=0.5, y=10, anchor="n")
 
         # Crear panel para la tabla
         self.panel_tabla = tk.Frame(self.panel_datos, bg="#FFFFFF")
@@ -134,7 +134,7 @@ class FormMaestro(tk.Tk):
 
     def creacion_acciones_cuerpo_datos(self, tipo_boton):
         # Crear el panel cuerpo dentro de panel_datos
-        self.panel_acciones_cuerpo = tk.Frame(self.panel_datos, bg=COLOR_PANEL_INFO)
+        self.panel_acciones_cuerpo = tk.Frame(self.panel_datos, bg=colores.COLOR_PANEL_INFO)
 
         def ajustar_panel():
             x, y = util_ventana.centrar_panel(self.panel_datos, self.ancho_cuerpo, self.alto_cuerpo)

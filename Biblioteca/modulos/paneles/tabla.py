@@ -2,7 +2,6 @@ from panel_Principal.form_maestro_design import *
 
 """Creacion de la Tabla"""
 def crear_tabla(self):
-    print(len(self.registros)) 
     self.columnas = list(self.registros[0].keys())
     # Crear un estilo para la tabla
     style = ttk.Style()

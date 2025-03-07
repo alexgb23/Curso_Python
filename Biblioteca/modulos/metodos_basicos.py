@@ -301,7 +301,7 @@ def instanciar(self, clase):
         try:
             self.registros = None
             autorlibro = AutorLibro()
-            self.registros = autorlibro.autorlibrocompleto
+            self.registros = autorlibro.autor_libros
             self.indice_actual = 0
             self.titulo_panel_administracion = "Autor-Libro"
             self.cargarDatos()

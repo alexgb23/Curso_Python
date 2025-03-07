@@ -3,14 +3,15 @@ from tkinter import ttk
 from config.config import (COLOR_BARRA_SUPERIOR,COLOR_MENU_LATERAL,COLOR_CUERPO_PRINCIPAL, COLOR_PANEL_INFO,COLOR_MENU_CURSOR_ENCIMA, COLOR_CABECERA_TABLA,COLOR_BTN)
 import util.util_ventana as util_ventana
 import util.util_imagenes as util_img
-from modulos.metodos_basicos import *
 import modulos.botones.btn_config as btn_config
 import modulos.botones.btn_hover as btn_hover
-import modulos.botones.definir_btns as definir_btns
+import modulos.datos.definir_btns as definir_btns
 import modulos.botones.btn_selected as btn_selected
 import modulos.paneles.panel_bienvenida as panel_bienvenida
 import modulos.paneles.subpanel_actualizar as cargarPanelActualizar
 import modulos.paneles.subpanel_insertar as cargarPanelInsertar
+import modulos.efectos_visuales.transisiones as transition
+from modulos.metodos_basicos import *
 
 class FormMaestro(tk.Tk):
     def __init__(self):

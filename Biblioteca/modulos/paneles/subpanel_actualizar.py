@@ -23,7 +23,7 @@ def cargarDatosParaActualizar(self, tipo_boton):
             side="left", expand=True, fill="x", padx=15)
         if columna == "id":
             self.campos_actualizar[columna].config(state="readonly", fg="darkgrey")
-    btn_config.crear_boton_sub_panel(self, tipo_boton)
+    btn_config.crear_boton_sub_panel(self, tipo_boton, self.campos_actualizar)
 
     # Forzar el ajuste del panel después de cargar los datos para que no sea visible
     self.panel_cuerpo.after(10, lambda: self.panel_acciones_cuerpo.place(y=-400))

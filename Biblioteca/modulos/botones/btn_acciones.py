@@ -12,3 +12,5 @@ def anterior_registro(self):
     if self.indice_actual > 0:
         self.indice_actual -= 1
         crear_panel_admin.mostrar_registro(self)
+
+

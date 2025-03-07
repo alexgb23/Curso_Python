@@ -15,3 +15,11 @@ def centrar_panel(panel_contenedor, panel_ancho, panel_alto):
     y = 70
     
     return x, y
+
+
+def config_window(self):
+    self.title("eDe-Lib")
+    self.iconbitmap("./image/books.ico")
+    w, h = 1366, 768
+    self.geometry("%dx%d+0+0" % (w, h))
+    centrar_ventana(self, w, h)

@@ -1,0 +1,13 @@
+from panel_Principal.form_maestro_design import *
+
+def siguiente_registro(self):
+    """ Muestra el siguiente registro """
+    if self.indice_actual < len(self.registros) - 1:
+        self.indice_actual += 1
+        self.mostrar_registro()
+
+def anterior_registro(self):
+    """ Muestra el registro anterior """
+    if self.indice_actual > 0:
+        self.indice_actual -= 1
+        self.mostrar_registro()

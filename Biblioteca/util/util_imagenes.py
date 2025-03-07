@@ -11,3 +11,4 @@ def leer_imagen_con_transparencia(path, size):
     imagen = imagen.resize(size, Image.ADAPTIVE)
     # Convertir a PhotoImage para usar en Tkinter
     return ImageTk.PhotoImage(imagen)
+

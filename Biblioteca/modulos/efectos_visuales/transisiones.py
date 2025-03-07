@@ -1,6 +1,4 @@
 
-
-
 def slide_out(self, ventana):
     def mover_ventana(i):
         if i <= 200:  # Continuar hasta que haya deslizado completamente

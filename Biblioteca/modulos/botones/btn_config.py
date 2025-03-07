@@ -3,6 +3,7 @@ import modulos.botones.btn_hover as btn_hover
 from modulos.metodos_basicos import *
 
 def configuracion_btn_menu_lateral(self, boton, text, icono, font_awesome, ancho_boton, alto_boton, activo):
+    """Configura los parámetros del botón en el menú lateral."""
     boton.config(
         text=f" {icono}  {text}",
         anchor="w",
@@ -26,6 +27,7 @@ def configuracion_btn_menu_lateral(self, boton, text, icono, font_awesome, ancho
 
 
 def configuracion_btn_menu_superior(self, boton, text, icono, font_awesome, ancho_boton, alto_boton, activo):
+    """Configura los parámetros del botón en el menú superior."""
     boton.config(
         text=f" {icono}  {text}",
         anchor="w",
@@ -46,17 +48,17 @@ def configuracion_btn_menu_superior(self, boton, text, icono, font_awesome, anch
 
 
 def crear_boton_sub_panel(self, tipo_boton):
-    # Definir el texto y el comando según el tipo de botón
-    if tipo_boton == "Actualizar":
-        texto = "Actualizar"
-    elif tipo_boton == "Insertar":
-        texto = "Insertar"
-    elif tipo_boton == "Eliminar":
-        texto = "Eliminar"
-    else:
+    """Crea un botón en el subpanel según el tipo especificado."""
+    texto = {
+        "Actualizar": "Actualizar",
+        "Insertar": "Insertar"
+    }.get(tipo_boton)
+
+    if not texto:
         return  # Si el tipo de botón no es válido, salir del método
+
     # Crear el botón
-    buton = tk.Button(
+    boton = tk.Button(
         self.panel_acciones_cuerpo,
         text=texto,
         padx=20,
@@ -64,11 +66,9 @@ def crear_boton_sub_panel(self, tipo_boton):
         font=("Arial", 12, "bold"),
         fg="white",
         command=lambda: acciones_botones_sub_panel(
-            self, self.titulo_panel_administracion, buton)
+            self, self.titulo_panel_administracion, boton)
     )
 
     # Empaquetar el botón
-    buton.pack(side="right", padx=20)
-    btn_hover.hover_event(self, buton)
-
-
+    boton.pack(side="right", padx=20)
+    btn_hover.hover_event(self, boton)

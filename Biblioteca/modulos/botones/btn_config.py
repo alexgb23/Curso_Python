@@ -54,7 +54,8 @@ def crear_boton_sub_panel(self, tipo_boton):
     """Crea un botón en el subpanel según el tipo especificado."""
     texto = {
         "Actualizar": "Actualizar",
-        "Insertar": "Insertar"
+        "Insertar": "Insertar", 
+        "Buscar": "Buscar"
     }.get(tipo_boton)
 
     if not texto:

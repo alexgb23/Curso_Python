@@ -7,6 +7,7 @@ from tkinter import messagebox
 import modulos.efectos_visuales.transisiones as transition
 import modulos.ejecucion_click.click_btn_menu_lateral as click_btn_menu_lateral
 
+
   
 def acciones(self, buton, btn_info_sup):
     btn_selected.marcar_boton(self, buton, btn_info_sup, True)
@@ -14,8 +15,15 @@ def acciones(self, buton, btn_info_sup):
     # Manejo de acciones según el texto del botón
     accion_texto = btn_info_sup["text"]
 
-    if accion_texto == "Buscar":
-        pass
+    if accion_texto == "Buscar": 
+        if self.titulo_panel_administracion == "Bienvenido a eDe-Lib":  
+            messagebox.showinfo(
+                "Error", "Debe seleccionar en el menu lateral que desea Buscar"
+            )
+            return
+        self.transicion_paneles_if_true() 
+        self.creacion_acciones_cuerpo_datos("Buscar")
+        transition.slide_in(self, self.panel_acciones_cuerpo)
     elif accion_texto == "Actualizar":
         if self.titulo_panel_administracion == "Bienvenido a eDe-Lib":  
             messagebox.showinfo(

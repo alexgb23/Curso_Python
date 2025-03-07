@@ -13,6 +13,7 @@ import modulos.paneles.subpanel_insertar as cargarPanelInsertar
 import modulos.efectos_visuales.transisiones as transition
 import modulos.ejecucion_click.click_btn_menu_lateral as click_btn_menu_lateral
 import modulos.ejecucion_click.click_btn_menu_sup as click_btn_menu_sup
+import modulos.paneles.subpanel_buscar as subpanel_buscar
 
 
 
@@ -40,6 +41,7 @@ class FormMaestro(tk.Tk):
         self.coordenadas = None
         self.visible = True  # Estado del panel
         self.titulo_panel_administracion = None
+        
 
     # Configuración de la ventana para que se muestre en el centro de la pantalla
     def configure_window(self):
@@ -50,6 +52,7 @@ class FormMaestro(tk.Tk):
         try:
             self.perfil = util_img.leer_imagen("image/eDe-Lib.png", (250, 250))
             self.exit = util_img.leer_imagen_con_transparencia("image/delete_exit_1195.png", (32, 32))
+            self.lupa = util_img.leer_imagen_con_transparencia("image/glass-2025715_640.png", (64, 64))
         except FileNotFoundError as e:
             print(f"Error: {e}")
 
@@ -111,7 +114,7 @@ class FormMaestro(tk.Tk):
     def creacion_cuerpo_datos(self):
         self.panel_datos = tk.Frame(self.cuerpo_principal, bg=colores.COLOR_CUERPO_PRINCIPAL)
         self.panel_datos.place(relwidth=1, relheight=1)
-
+        
         self.panel_cuerpo = tk.Frame(self.panel_datos, bg=colores.COLOR_PANEL_INFO)
 
         # Metodo para centrar el panel_cuerpo
@@ -132,6 +135,7 @@ class FormMaestro(tk.Tk):
 
         ajustar_panel()
 
+
     def creacion_acciones_cuerpo_datos(self, tipo_boton):
         # Crear el panel cuerpo dentro de panel_datos
         self.panel_acciones_cuerpo = tk.Frame(self.panel_datos, bg=colores.COLOR_PANEL_INFO)
@@ -145,6 +149,8 @@ class FormMaestro(tk.Tk):
 
         if tipo_boton == "Insertar":
             cargarPanelInsertar.cargarDatosParaInsertar(self, tipo_boton)
+        elif tipo_boton == "Buscar":
+            subpanel_buscar.creacion_penel_buscar(self, tipo_boton)
         else:
             cargarPanelActualizar.cargarDatosParaActualizar(self, tipo_boton)
 

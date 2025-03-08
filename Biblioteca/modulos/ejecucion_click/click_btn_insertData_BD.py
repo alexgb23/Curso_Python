@@ -11,6 +11,7 @@ def acciones_botones_sub_panel(self, tabla, boton):
     elif boton['text'] == "Insertar":
         insertar(self, tabla)
 
+
 def obtener_datos_editorial(cadena_busqueda):
     edit = Editoriales()
     campos_a_buscar = ['nombre']  # Reemplaza con los campos reales de tu tabla

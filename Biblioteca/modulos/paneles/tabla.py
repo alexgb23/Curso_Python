@@ -43,3 +43,15 @@ def crear_tabla(self):
     # Asociar el evento de clic a la tabla
     #dicho evento se encuentra en form_maestro
     self.tabla.bind("<ButtonRelease-1>", self.on_item_tabla_click)
+
+def borrar_tabla(self):
+    # Eliminar todos los registros de la tabla
+    for item in self.tabla.get_children():
+        self.tabla.delete(item)
+
+def actualizar_tabla(self, nuevos_registros):
+    borrar_tabla(self)
+    
+    # Insertar nuevos registros en la tabla
+    for registro in nuevos_registros:
+        self.tabla.insert("", "end", values=[registro[col] for col in self.columnas])

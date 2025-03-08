@@ -36,6 +36,7 @@ class FormMaestro(tk.Tk):
         self.indice_actual = 0
         self.campo_selected_table = {}
         self.registros = None
+        self.reg_busqueda=[]
         self.ancho_cuerpo = 600
         self.alto_cuerpo = 320
         self.coordenadas = None

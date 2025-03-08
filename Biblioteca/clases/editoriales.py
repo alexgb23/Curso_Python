@@ -16,3 +16,4 @@ class Editoriales(BaseORM):
             telefono = editorial.get('telefono')
             print(f'ID: {id}, Nombre: {nombre}, Direccion: {direccion}, Telefono: {telefono}')  
 
+

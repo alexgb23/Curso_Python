@@ -6,8 +6,9 @@ import modulos.paneles.ccp_actualizar_autorlibro as actualizar_autorlibro
 
 
 def cargarDatosParaActualizar(self, tipo_boton):  
-    #titulo del panel      
-    tk.Label(self.panel_acciones_cuerpo, text=f"Panel para Actualizar {self.titulo_panel_administracion}", bg=colores.COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
+    #titulo del panel     
+    self.tit_panel_actualizar= "Panel para Actualizar"
+    tk.Label(self.panel_acciones_cuerpo, text=f"{self.tit_panel_actualizar} {self.titulo_panel_administracion}", bg=colores.COLOR_PANEL_INFO, font=("Arial", 18, "bold")).pack(pady=5)
     self.campos_actualizar = {}
 
     #condicion para el tipo de panel que se va a crear dependiendo si es Libros o Autor-Libro
@@ -40,3 +41,16 @@ def cargarDatosParaActualizar(self, tipo_boton):
 
     # Forzar el ajuste del panel después de cargar los datos para que no sea visible
     self.panel_cuerpo.after(10, lambda: self.panel_acciones_cuerpo.place(y=-400))
+
+
+def mostrar_registro(self,campo_selected_table):
+    # Limpia los campos actuales
+    for columna in self.campos_actualizar.keys():
+        self.campos_actualizar[columna].config(state="normal")
+        self.campos_actualizar[columna].delete(0, tk.END)
+    
+    # Introduce los datos de tabla_selected en los campos
+    for columna, valor in campo_selected_table.items():
+        if columna in self.campos_actualizar:  # Verifica que la columna exista
+            self.campos_actualizar[columna].insert(0, valor)
+            self.campos_actualizar[columna].config(state="readonly")

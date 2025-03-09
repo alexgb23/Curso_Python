@@ -52,66 +52,8 @@ def creacion_penel_buscar(self, tipo_boton):
     self.panel_cuerpo.after(10, lambda: self.panel_acciones_cuerpo.place(y=-400))
 
 
-def recolectar_datos_busqueda(self):
-    # Recoger los valores de los checkboxes
-    valores= obtener_valores(self)  # Obtiene un diccionario con los valores de los checkboxes
-    # Recoger el texto de búsqueda    
-    # Inicializar la lista de campos a buscar
-    valores= obtener_valores(self)
-    campos = []
-    
-    for campo, valor in valores.items():
-        if valor == 1:
-            campos.append(campo)
 
-
-    # Si no hay campos seleccionados, realizar la búsqueda por esto
-    if not campos and self.titulo_panel_administracion == "Libros":
-        campos = ["id", "titulo", "anio"]
-    elif not campos and self.titulo_panel_administracion == "Autores":
-        campos = ["id", "nombre", "apellido", "nacionalidad"]
-    elif not campos and self.titulo_panel_administracion == "Editoriales":
-        campos = ["id", "nombre","direccion","telefono"]
-    elif not campos and self.titulo_panel_administracion == "AutorLibro":
-        campos = ["id_libro", "id_autor"]
-
-    # Actualizar la tabla con los resultados de la búsqueda
-    busqueda_baseDatos(self, campos)
-
-
-
-def busqueda_baseDatos(self , campos):
-    busqueda = self.campo_busqueda.get()
-    self.reg_busqueda=[]
-    if self.titulo_panel_administracion == "Libros":
-        self.reg_busqueda=busqueda_libros(self, campos, busqueda)
-        print(self.reg_busqueda)
-    elif self.titulo_panel_administracion == "Autores":
-        autores = Autores()
-        self.reg_busqueda=autores.filtrar(campos,busqueda)
-    elif self.titulo_panel_administracion == "Editoriales":
-        editoriales = Editoriales()
-        self.reg_busqueda= editoriales.filtrar(campos,busqueda)
-    # elif self.titulo_panel_administracion == "AutorLibro":
-    #     autorlibro= AutorLibro()
-    #     resultados = autorlibro.filtrar(campos,busqueda)
-    #     self.busqueda=resultados
-
-    tabla.actualizar_tabla(self, self.reg_busqueda)
-
-def busqueda_libros(self, campos, busqueda):
-    libros = Libros()
-    if campos == ["editorial"]:
-        resultados = libros.filtrar_libros_por_editorial(busqueda)
-        return resultados
-    elif campos == ["autor"]:
-        resultados = libros.filtrar_libros_por_autor(busqueda)
-        return resultados
-    else:
-        resultados = libros.filtrar_libros(campos, busqueda)
-        return resultados
-
- 
+# Este método crea los checkboxes dependiendo del panel 
 def crear_checkboxes(self, tipo):
     opciones = {
         "Libros": ["id", "titulo", "año", "autor", "editorial"],
@@ -147,3 +89,63 @@ def obtener_valores(self):
     return valores
 
 
+def recolectar_datos_busqueda(self):
+    # Obtiene un diccionario con los valores de los checkboxes
+    valores= obtener_valores(self)
+    campos = []
+    
+    for campo, valor in valores.items():
+        if valor == 1:
+            campos.append(campo)
+
+    # Cambiar "anio" a "anios" si está presente en los campos
+    if "año" in campos:
+        campos[campos.index("año")] = "anio"
+
+    # Si no hay campos seleccionados, realizar la búsqueda por esto
+    if not campos and self.titulo_panel_administracion == "Libros":
+        campos = ["id", "titulo", "anio"]
+    elif not campos and self.titulo_panel_administracion == "Autores":
+        campos = ["id", "nombre", "apellido", "nacionalidad"]
+    elif not campos and self.titulo_panel_administracion == "Editoriales":
+        campos = ["id", "nombre","direccion","telefono"]
+    elif not campos and self.titulo_panel_administracion == "AutorLibro":
+        campos = ["id_libro", "id_autor"]
+
+    # Actualizar la tabla con los resultados de la búsqueda
+    busqueda_baseDatos(self, campos)
+
+
+def busqueda_baseDatos(self , campos):
+    busqueda = self.campo_busqueda.get()
+    self.reg_busqueda=[]
+    if self.titulo_panel_administracion == "Libros":
+        self.reg_busqueda=busqueda_libros(self, campos, busqueda)
+    elif self.titulo_panel_administracion == "Autores":
+        autores = Autores()
+        self.reg_busqueda=autores.filtrar(campos,busqueda)
+    elif self.titulo_panel_administracion == "Editoriales":
+        editoriales = Editoriales()
+        self.reg_busqueda= editoriales.filtrar(campos,busqueda)
+    # elif self.titulo_panel_administracion == "AutorLibro":
+    #     autorlibro= AutorLibro()
+    #     resultados = autorlibro.filtrar(campos,busqueda)
+    #     self.busqueda=resultados
+    tabla.actualizar_tabla(self, self.reg_busqueda)
+
+def busqueda_libros(self, campos, busqueda):
+    libros = Libros()
+    if campos == ["editorial"]:
+        resultados = libros.filtrar_libros_por_editorial(busqueda)
+        return resultados
+    elif campos == ["autor"]:
+        resultados = libros.filtrar_libros_por_autor(busqueda)
+        return resultados
+    else:
+        resultados = libros.filtrar_libros(campos, busqueda)
+        if not resultados:
+            resultados = libros.filtrar_libros_por_autor(busqueda)
+            if not resultados:
+                resultados = libros.filtrar_libros_por_editorial(busqueda)
+
+        return resultados

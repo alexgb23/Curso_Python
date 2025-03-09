@@ -14,6 +14,7 @@ import modulos.efectos_visuales.transisiones as transition
 import modulos.ejecucion_click.click_btn_menu_lateral as click_btn_menu_lateral
 import modulos.ejecucion_click.click_btn_menu_sup as click_btn_menu_sup
 import modulos.paneles.subpanel_buscar as subpanel_buscar
+import modulos.paneles.tabla as tabla
 
 
 
@@ -42,6 +43,7 @@ class FormMaestro(tk.Tk):
         self.coordenadas = None
         self.visible = True  # Estado del panel
         self.titulo_panel_administracion = None
+        self.tit_panel_actualizar= None
         
 
     # Configuración de la ventana para que se muestre en el centro de la pantalla
@@ -176,9 +178,14 @@ class FormMaestro(tk.Tk):
         self.campo_selected_table = {}
         # Obtener el item seleccionado
         item = self.tabla.selection()
+        
         if item:
             # Obtener los valores del item seleccionado
             self.campo_selected_table = {col: val for col, val in zip(self.tabla["columns"], self.tabla.item(item, "values"))}
+        if item and self.tit_panel_actualizar == "Panel para Actualizar":
+        # Configurar los campos de entrada con los valores del item seleccionado  if self.tit_panel_actualizar == "Panel para Actualizar":
+            cargarPanelActualizar.mostrar_registro(self,self.campo_selected_table)
+
 
     # Metodo de redimensionamiento de imagen de fondo del panel de Bienvenida
     # necesario en esta clase para que funcione

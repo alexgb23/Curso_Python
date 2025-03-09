@@ -91,5 +91,3 @@ def insertar(self, tabla):
     elif tabla == "Autor-Libro":
         # Lógica para Autor-Libro si es necesario
         pass
-
-

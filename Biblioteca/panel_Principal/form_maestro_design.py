@@ -182,9 +182,10 @@ class FormMaestro(tk.Tk):
         if item:
             # Obtener los valores del item seleccionado
             self.campo_selected_table = {col: val for col, val in zip(self.tabla["columns"], self.tabla.item(item, "values"))}
+            print(self.campo_selected_table)
         if item and self.tit_panel_actualizar == "Panel para Actualizar":
-        # Configurar los campos de entrada con los valores del item seleccionado  if self.tit_panel_actualizar == "Panel para Actualizar":
-            cargarPanelActualizar.mostrar_registro(self,self.campo_selected_table)
+        # Cambiar los campos de entrada con los valores del item seleccionado 
+            cargarPanelActualizar.actualizar_campos_actualizar(self,self.campo_selected_table)
 
 
     # Metodo de redimensionamiento de imagen de fondo del panel de Bienvenida

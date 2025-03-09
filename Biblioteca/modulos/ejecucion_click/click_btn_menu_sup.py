@@ -27,7 +27,21 @@ def acciones(self, buton, btn_info_sup):
         return
         
     if accion_texto == "Eliminar":
-        eliminar_registro(self)
+        # Mensaje de confirmación basado en el título del panel
+        if self.titulo_panel_administracion == "Libros":
+            mensaje = f"¿Está seguro de que desea eliminar el libro '{self.campo_selected_table.get('titulo', 'desconocido')}'?"
+        elif self.titulo_panel_administracion == "Editoriales":
+            mensaje = f"¿Está seguro de que desea eliminar la editorial '{self.campo_selected_table.get('nombre', 'desconocido')}'?"
+        elif self.titulo_panel_administracion == "Autores":
+            nombre_autor = self.campo_selected_table.get('nombre', 'desconocido')
+            apellido_autor = self.campo_selected_table.get('apellido', 'desconocido')
+            mensaje = f"¿Está seguro de que desea eliminar el autor '{nombre_autor} {apellido_autor}'?"
+        else:
+            mensaje = "¿Está seguro de que desea eliminar el registro seleccionado?"
+
+        respuesta = messagebox.askyesno("Confirmar Eliminación", mensaje)
+        if respuesta:  # Si el usuario acepta
+            eliminar_registro(self)
         return
 
     self.transicion_paneles_if_true()

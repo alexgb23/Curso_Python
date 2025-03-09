@@ -131,7 +131,9 @@ def busqueda_baseDatos(self , campos):
     #     autorlibro= AutorLibro()
     #     resultados = autorlibro.filtrar(campos,busqueda)
     #     self.busqueda=resultados
+    
     tabla.actualizar_tabla(self, self.reg_busqueda)
+    self.campo_selected_table = {}
 
 def busqueda_libros(self, campos, busqueda):
     libros = Libros()

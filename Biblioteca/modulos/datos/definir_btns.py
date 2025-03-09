@@ -8,9 +8,8 @@ def definir_btn_menu_lateral(self):
         {"text": "Libros", "icon": "\uf0f6", "activo": False},
         {"text": "Autores", "icon": "\uf0f6", "activo": False},
         {"text": "Editoriales", "icon": "\uf0f6", "activo": False},
-        {"text": "Usuarios", "icon": "\uf0f6", "activo": False},
-        {"text": "Crear Tabla", "icon": "\uf0f6", "activo": False},
         {"text": "Autor-Libro", "icon": "\uf0f6", "activo": False},
+        {"text": "Crear Tabla", "icon": "\uf0f6", "activo": False},
     ]
 
 def definir_btn_menu_superior(self):

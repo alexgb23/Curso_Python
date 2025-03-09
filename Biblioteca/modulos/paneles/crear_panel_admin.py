@@ -2,7 +2,6 @@ import tkinter as ttk
 import tkinter as tk
 import modulos.paneles.tabla as tabla
 import modulos.botones.btn_hover as btn_hover
-import modulos.botones.btn_acciones as btn_acciones
 from config.config import COLOR_PANEL_INFO, COLOR_BTN
 
 
@@ -49,11 +48,13 @@ def cargarDatos(self, quepanel=None):
         
              
         btnMas = tk.Button(self.panel_cuerpo, text="Siguiente", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
-                           command= lambda: btn_acciones.siguiente_registro(self))
+                           command= lambda: 
+                           siguiente_registro(self))
         btnMas.pack(side="right", padx=20)
         btn_hover.hover_event_sup(self, btnMas)
         btnMenos = tk.Button(self.panel_cuerpo, text="Anterior", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
-                             command= lambda: btn_acciones.anterior_registro(self))
+                             command= lambda: 
+                             anterior_registro(self))
         btnMenos.pack(side="right", padx=20)
         btn_hover.hover_event_sup(self, btnMenos)
 
@@ -75,3 +76,18 @@ def mostrar_registro(self):
         valor = registro_actual.get(columna, "")  # Usa get para evitar KeyError
         campo.insert(0, valor if valor else "")  # Inserta un valor vacío si no hay
         campo.config(state="readonly")
+
+
+def siguiente_registro(self):
+    """ Muestra el siguiente registro """
+    if self.indice_actual < len(self.registros) - 1:
+        self.indice_actual += 1
+        mostrar_registro(self)
+
+def anterior_registro(self):
+    """ Muestra el registro anterior """
+    if self.indice_actual > 0:
+        self.indice_actual -= 1
+        mostrar_registro(self)
+
+

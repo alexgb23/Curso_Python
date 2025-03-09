@@ -43,7 +43,7 @@ def cargarDatosParaActualizar(self, tipo_boton):
     self.panel_cuerpo.after(10, lambda: self.panel_acciones_cuerpo.place(y=-400))
 
 
-def mostrar_registro(self,campo_selected_table):
+def actualizar_campos_actualizar(self,campo_selected_table):
     # Limpia los campos actuales
     for columna in self.campos_actualizar.keys():
         self.campos_actualizar[columna].config(state="normal")

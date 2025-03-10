@@ -14,7 +14,7 @@ import modulos.efectos_visuales.transisiones as transition
 import modulos.ejecucion_click.click_btn_menu_lateral as click_btn_menu_lateral
 import modulos.ejecucion_click.click_btn_menu_sup as click_btn_menu_sup
 import modulos.paneles.subpanel_buscar as subpanel_buscar
-import modulos.paneles.tabla as tabla
+
 
 
 
@@ -44,7 +44,7 @@ class FormMaestro(tk.Tk):
         self.visible = True  # Estado del panel
         self.titulo_panel_administracion = None
         self.tit_panel_actualizar= None
-        
+        self.contador_filas = 0
 
     # Configuración de la ventana para que se muestre en el centro de la pantalla
     def configure_window(self):
@@ -55,6 +55,11 @@ class FormMaestro(tk.Tk):
         try:
             self.perfil = util_img.leer_imagen("image/eDe-Lib.png", (250, 250))
             self.exit = util_img.leer_imagen_con_transparencia("image/delete_exit_1195.png", (32, 32))
+            self.exit2 = util_img.leer_imagen_con_transparencia("image/exit2.png", (32, 32))
+            self.max = util_img.leer_imagen_con_transparencia("image/icons8-minimizar-64.png", (32, 32))
+            self.maxmax= util_img.leer_imagen_con_transparencia("image/icons8-expandir-50.png", (32, 32))
+            self.min = util_img.leer_imagen_con_transparencia("image/minimizar.png", (32, 32))
+            self.min2 = util_img.leer_imagen_con_transparencia("image/minimizar2.png", (32, 32))
             self.lupa = util_img.leer_imagen_con_transparencia("image/glass-2025715_640.png", (64, 64))
         except FileNotFoundError as e:
             print(f"Error: {e}")
@@ -95,11 +100,22 @@ class FormMaestro(tk.Tk):
         self.labelTitulo.config(fg="white", font=("Time New Roman", 24, "bold"), bg=colores.COLOR_BARRA_SUPERIOR, padx=10, pady=16)
         self.labelTitulo.pack(side=tk.LEFT, padx=15)
 
+        #Botones de comando
         # crear boton salir, el cual tiene el metodo de destruir la ventana cuando se presiona
         self.salir = tk.Button(self.barra_superior, image=self.exit)
-        self.salir.pack(side=tk.RIGHT, padx=15)
-        self.salir.config(command=self.destroy, bg="pink")
+        self.salir.pack(side=tk.RIGHT)
+        self.salir.config(command=self.destroy, bg=colores.COLOR_BARRA_SUPERIOR, bd=0)
 
+        self.maximizar = tk.Button(self.barra_superior)
+        self.maximizar.pack(side=tk.RIGHT)
+        self.maximizar.config(command=self.maximizar_ventana, bg=colores.COLOR_BARRA_SUPERIOR, bd=0, image=self.maxmax if self.winfo_toplevel().state() == "zoomed" and self.winfo_toplevel().overrideredirect()
+        else self.maximizar.config(image=self.max))
+
+
+        self.minimizar = tk.Button(self.barra_superior, image=self.min)
+        self.minimizar.pack(side=tk.RIGHT)
+        self.minimizar.config(command=self.minimizar_ventana, bg=colores.COLOR_BARRA_SUPERIOR, bd=0)
+      
         # Crear los botones del menu Superior recorriendo la lista, aplicandoles una configuración personalizada
         self.btn_info_sup = definir_btns.definir_btn_menu_superior(self)  # lista de botones
 
@@ -108,11 +124,31 @@ class FormMaestro(tk.Tk):
             btn_config.configuracion_btn_menu_superior(self, but, btn["text"], btn["icon"], btn["activo"])
             but.config(command=lambda b=but, btn=btn: click_btn_menu_sup.acciones(self, b, btn))  # Asigna el comando
 
+
         # Configura el evento hover para el botón de salida el cual se encuentra en el modulo btn_hover    
         btn_hover.hover_event_Exit(self, self.salir)
+        btn_hover.hover_event_minimizar(self, self.minimizar)
+        btn_hover.hover_event_maximizar(self, self.maximizar)
+
 
     def crear_panel_bienvenida(self):
         panel_bienvenida.crear_panel_bienvenida(self)
+
+
+
+    def maximizar_ventana(self):
+        if self.winfo_toplevel().state() == "zoomed" and self.winfo_toplevel().overrideredirect():
+            self.winfo_toplevel().state("normal")
+            self.winfo_toplevel().overrideredirect(False)
+            self.configure_window()
+            return
+        else:
+            self.winfo_toplevel().state("zoomed")
+            self.winfo_toplevel().overrideredirect(True)
+
+    def minimizar_ventana(self):
+        self.winfo_toplevel().state("icon")
+
 
     def creacion_cuerpo_datos(self):
         self.panel_datos = tk.Frame(self.cuerpo_principal, bg=colores.COLOR_CUERPO_PRINCIPAL)

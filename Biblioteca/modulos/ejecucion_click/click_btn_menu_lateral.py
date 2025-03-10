@@ -4,6 +4,7 @@ from clases.libros import Libros
 from clases.editoriales import Editoriales
 from clases.autores import Autores
 from clases.autorlibro import AutorLibro
+import modulos.paneles.crear_tabla_bd as crear_tabla
 
 
 
@@ -38,5 +39,5 @@ def instanciar(self, clase):
     elif clase == "Inicio":
         crear_panel_admin.cargarDatos(self, "Inicio")
     else:
-        print("No se encontró la clase")
+        crear_tabla.nueva_tabla_Base_Datos(self)
 

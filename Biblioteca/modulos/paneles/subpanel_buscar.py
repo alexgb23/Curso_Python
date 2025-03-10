@@ -77,7 +77,8 @@ def crear_checkboxes(self, tipo):
         for i, opcion in enumerate(opciones[tipo]):
             var = tk.IntVar()  # Crear una variable para el checkbox
             checkbox = tk.Checkbutton(frame_check1 if i < 2 else frame_check2, text=opcion, variable=var,
-                                      bg=colores.COLOR_PANEL_INFO, font=("Arial", 12, "bold"))
+                                      bg=colores.COLOR_PANEL_INFO, font=("Arial", 12, "bold"),highlightbackground=colores.COLOR_PANEL_INFO, 
+                                      activebackground=colores.COLOR_PANEL_INFO)
             checkbox.pack(side="left", padx=10)  # Empaquetar a la izquierda
             
             # Guardar la variable en el diccionario con el nombre de la opción

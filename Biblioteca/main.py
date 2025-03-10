@@ -5,6 +5,7 @@ from config.install_dependency import check_and_install_pillow, check_and_instal
 if __name__ == "__main__":
     check_and_install_pillow()
     check_and_install_mysql()
+    
     app = FormMaestro()
     ## Ocultar la barra de título y los botones
     # app.winfo_toplevel().overrideredirect(True)

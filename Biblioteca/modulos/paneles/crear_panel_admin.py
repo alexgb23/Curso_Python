@@ -2,7 +2,7 @@ import tkinter as ttk
 import tkinter as tk
 import modulos.paneles.tabla as tabla
 import modulos.botones.btn_hover as btn_hover
-from config.config import COLOR_PANEL_INFO, COLOR_BTN
+import config.config as colores
 
 
 # este metodo se encarga de cargar los datos cuando se hace click en uno de los botones laterales 
@@ -12,8 +12,12 @@ from config.config import COLOR_PANEL_INFO, COLOR_BTN
 def cargarDatos(self, quepanel=None):
     # Esto lo hago para si clican en inicio al cargar el panel no se rompa el programa
     if quepanel == "Inicio" and self.titulo_panel_administracion != "Bienvenido a eDe-Lib":
-        self.panel_datos.pack_forget()
-        self.crear_panel_bienvenida()
+        if self.titulo_panel_administracion == "Nueva Tabla en la Base de Datos":
+            self.panel_nueva_tabla.pack_forget()
+            self.crear_panel_bienvenida()
+        else:
+            self.panel_datos.pack_forget()
+            self.crear_panel_bienvenida()
 
     elif quepanel == "Inicio" and self.titulo_panel_administracion == "Bienvenido a eDe-Lib":
         return
@@ -32,14 +36,14 @@ def cargarDatos(self, quepanel=None):
         for columna in self.columnas:
 
             # Contenedor de cada fila (etiqueta + campo)
-            frame_fila = tk.Frame(self.panel_cuerpo, bg=COLOR_PANEL_INFO)
+            frame_fila = tk.Frame(self.panel_cuerpo, bg=colores.COLOR_PANEL_INFO)
             frame_fila.pack(pady=10, fill="x")
 
              # Obtener la etiqueta correspondiente, o usar la columna en sí
             texto_label = etiquetas.get(columna, columna.title())
           
             self.label = tk.Label(frame_fila, text=texto_label, width=15,
-                    anchor="w", font=("Arial", 14, "bold"), bg=COLOR_PANEL_INFO).pack(side="left", padx=5)
+                    anchor="w", font=("Arial", 14, "bold"), bg=colores.COLOR_PANEL_INFO).pack(side="left", padx=5)
             
             self.campos[columna] = ttk.Entry(
                 frame_fila, font=("Arial", 14, "bold"))
@@ -47,12 +51,12 @@ def cargarDatos(self, quepanel=None):
                 side="left", expand=True, fill="x", padx=15)
         
              
-        btnMas = tk.Button(self.panel_cuerpo, text="Siguiente", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
+        btnMas = tk.Button(self.panel_cuerpo, text="Siguiente", padx=20, bg=colores.COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
                            command= lambda: 
                            siguiente_registro(self))
         btnMas.pack(side="right", padx=20)
         btn_hover.hover_event_sup(self, btnMas)
-        btnMenos = tk.Button(self.panel_cuerpo, text="Anterior", padx=20, bg=COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
+        btnMenos = tk.Button(self.panel_cuerpo, text="Anterior", padx=20, bg=colores.COLOR_BTN, font=("Arial", 12, "bold"), fg="white",
                              command= lambda: 
                              anterior_registro(self))
         btnMenos.pack(side="right", padx=20)

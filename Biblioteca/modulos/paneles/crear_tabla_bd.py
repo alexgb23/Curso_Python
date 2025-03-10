@@ -50,6 +50,10 @@ def nueva_tabla_Base_Datos(self):
 
     self.cuerpo_campos = tk.Frame(self.panel_cuerpo_tabla, bg="gray")
     self.cuerpo_campos.place(relx=0.5, y=120, anchor="n")
+    self.cuerpo_campos.grid_rowconfigure(0, weight=1)  # Permite que la fila 0 crezca
+    self.cuerpo_campos.grid_columnconfigure(0, weight=1)  # Permite que la columna 0 crezca
+ 
+
 
     
     self.chekked=tk.IntVar()
@@ -70,14 +74,14 @@ def agregar_campo(self):
 
 def crear_campo(self, label_text, widget_type, values=None, **kwargs):
     """Crea un campo con un label y un widget."""
-    frame_campo = tk.Frame(self.cuerpo_campos, bg=colores.COLOR_PANEL_INFO)
-    frame_campo.pack(side="left", pady=10, padx=10)
-    
-    if self.contador_filas == 0:
-        frame_campo.pack(side="top", pady=10, padx=10)
-        self.contador_filas += 1
+    sub_panel_cuerpo = tk.Frame(self.cuerpo_campos, bg=colores.COLOR_PANEL_INFO)
+    sub_panel_cuerpo.grid(row=self.contador_filas, column=0, rowspan=5, columnspan=5,  padx=10, pady=10)
 
-       
+    self.contador_filas += 1
+
+    frame_campo = tk.Frame(sub_panel_cuerpo, bg=colores.COLOR_PANEL_INFO)
+    frame_campo.pack(side="left", pady=10, padx=10)
+
 
     label = tk.Label(frame_campo, text=label_text, bg=colores.COLOR_PANEL_INFO, fg=colores.COLOR_BARRA_SUPERIOR, font=("Arial", 12, "bold"))
     label.pack(side=tk.TOP)

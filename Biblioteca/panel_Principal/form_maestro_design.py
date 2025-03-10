@@ -45,6 +45,7 @@ class FormMaestro(tk.Tk):
         self.titulo_panel_administracion = None
         self.tit_panel_actualizar= None
         self.contador_filas = 0
+        self.contador_columnas = 0
 
     # Configuración de la ventana para que se muestre en el centro de la pantalla
     def configure_window(self):

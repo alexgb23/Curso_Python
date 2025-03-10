@@ -48,11 +48,11 @@ def nueva_tabla_Base_Datos(self):
     self.boton_agregar_campo.pack(side="left", padx=30)
 
 
-    self.cuerpo_campos = tk.Frame(self.panel_cuerpo_tabla, bg="gray")
+    self.cuerpo_campos = tk.Frame(self.panel_cuerpo_tabla, bg=colores.COLOR_PANEL_INFO)
     self.cuerpo_campos.place(relx=0.5, y=120, anchor="n")
-    self.cuerpo_campos.grid_rowconfigure(0, weight=1)  # Permite que la fila 0 crezca
-    self.cuerpo_campos.grid_columnconfigure(0, weight=1)  # Permite que la columna 0 crezca
- 
+    self.sub_cuerpo_campos = tk.Frame(self.cuerpo_campos, bg=colores.COLOR_PANEL_INFO)
+    self.sub_cuerpo_campos.grid(row=0, column=0, columnspan=5, padx=10, pady=5)
+
 
 
     
@@ -74,18 +74,25 @@ def agregar_campo(self):
 
 def crear_campo(self, label_text, widget_type, values=None, **kwargs):
     """Crea un campo con un label y un widget."""
-    sub_panel_cuerpo = tk.Frame(self.cuerpo_campos, bg=colores.COLOR_PANEL_INFO)
-    sub_panel_cuerpo.grid(row=self.contador_filas, column=0, rowspan=5, columnspan=5,  padx=10, pady=10)
+    # Crear un nuevo frame
+    frame_campo = tk.Frame(self.sub_cuerpo_campos, bg=colores.COLOR_PANEL_INFO)
+    
+    # Colocar el frame en la fila 0 y en la columna correspondiente
+    frame_campo.grid(row=self.contador_filas, column=self.contador_columnas, padx=10, pady=5, sticky="w")
+    
+    # Incrementar el contador de columnas
+    self.contador_columnas += 1
+    
+    # Si se alcanzan 5 columnas, reiniciar el contador de columnas y aumentar el contador de filas
+    if self.contador_columnas >= 5:
+        self.contador_columnas = 0
+        self.contador_filas += 1
 
-    self.contador_filas += 1
-
-    frame_campo = tk.Frame(sub_panel_cuerpo, bg=colores.COLOR_PANEL_INFO)
-    frame_campo.pack(side="left", pady=10, padx=10)
-
-
+    # Crear y empaquetar la etiqueta
     label = tk.Label(frame_campo, text=label_text, bg=colores.COLOR_PANEL_INFO, fg=colores.COLOR_BARRA_SUPERIOR, font=("Arial", 12, "bold"))
     label.pack(side=tk.TOP)
 
+    # Crear y empaquetar el widget según el tipo
     if widget_type == tk.Entry:
         widget = widget_type(frame_campo, **kwargs, fg=colores.COLOR_BARRA_SUPERIOR, font=("Arial", 12, "bold"))
     elif widget_type == ttk.Combobox:

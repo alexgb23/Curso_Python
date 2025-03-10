@@ -1,0 +1,81 @@
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango
+$ mk djiango-test
+bash: mk: command not found
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango
+$ mkdir django-test
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango
+$ cd djiango-test
+bash: cd: djiango-test: No such file or directory
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango
+$ cd django-test
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test
+$ django-admin startproject misitio
+bash: django-admin: command not found
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test
+$ django-admin startproject misitio
+bash: django-admin: command not found
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test
+$ ls
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test
+$ django-admin startproject misitio^C
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test
+$ django-admin startproject misitio
+bash: django-admin: command not found
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test
+$ pip install django
+Collecting django
+  Using cached Django-5.1.7-py3-none-any.whl.metadata (4.1 kB)
+Collecting asgiref<4,>=3.8.1 (from django)
+  Using cached asgiref-3.8.1-py3-none-any.whl.metadata (9.3 kB)
+Collecting sqlparse>=0.3.1 (from django)
+  Using cached sqlparse-0.5.3-py3-none-any.whl.metadata (3.9 kB)
+Collecting tzdata (from django)
+  Using cached tzdata-2025.1-py2.py3-none-any.whl.metadata (1.4 kB)
+Using cached Django-5.1.7-py3-none-any.whl (8.3 MB)
+Using cached asgiref-3.8.1-py3-none-any.whl (23 kB)
+Using cached sqlparse-0.5.3-py3-none-any.whl (44 kB)
+Using cached tzdata-2025.1-py2.py3-none-any.whl (346 kB)
+Installing collected packages: tzdata, sqlparse, asgiref, django
+Successfully installed asgiref-3.8.1 django-5.1.7 sqlparse-0.5.3 tzdata-2025.1
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test
+$ django-admin startproject misitio
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test
+$ cd misitio
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test/misitio
+$ ls
+manage.py*  misitio/
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test/misitio
+$ python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s). Your project may not work properly until you
+ apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+March 10, 2025 - 16:07:00
+Django version 5.1.7, using settings 'misitio.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+[10/Mar/2025 16:07:25] "GET / HTTP/1.1" 200 12068
+Not Found: /favicon.ico
+[10/Mar/2025 16:07:27] "GET /favicon.ico HTTP/1.1" 404 2209
+
+
+PROGRAMAS@EDE-ALU-22-078 MINGW64 /c/Curso_Python/jdiango/django-test/misitio

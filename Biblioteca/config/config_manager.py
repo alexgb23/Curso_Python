@@ -1,6 +1,5 @@
 import configparser
 
-
 class ConfigManager:
     def __init__(self, config_file='config.ini'):
         self.config = configparser.ConfigParser()

@@ -13,7 +13,6 @@ def slide_out(self, ventana):
     mover_ventana(0)
 
 
-
 def slide_in(self, ventana, tiempo_espera=800):  # tiempo_espera en milisegundos
     original_x = self.coordenadas[0]
     original_y = self.coordenadas[1]

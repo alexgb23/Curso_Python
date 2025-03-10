@@ -14,7 +14,7 @@ def acciones_botones_sub_panel(self, tabla, boton):
 
 def obtener_datos_editorial(cadena_busqueda):
     edit = Editoriales()
-    campos_a_buscar = ['nombre']  # Reemplaza con los campos reales de tu tabla
+    campos_a_buscar = ['nombre']  
     resul = edit.filtrar(campos_a_buscar, cadena_busqueda)
     return resul[0]['id'] if resul else None
 

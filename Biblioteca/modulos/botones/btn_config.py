@@ -1,6 +1,5 @@
 import tkinter as tk
 import modulos.botones.btn_hover as btn_hover
-import modulos.botones.btn_config as btn_config
 import config.config as colores
 from tkinter import font
 import modulos.ejecucion_click.click_btn_insertData_BD as ejecutar

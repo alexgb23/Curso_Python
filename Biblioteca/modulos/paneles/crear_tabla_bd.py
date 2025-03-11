@@ -130,7 +130,6 @@ def actualizar_estado_campos(self, check_var, tipo_widget, indice_widget):
 
 def imprimir_datos(self):
     datos = []
-    aa={}
     nombre_tabla = self.input_nombre_tabla.get()
     
     checkbutton_index = 0  # Contador para los Checkbuttons
@@ -143,23 +142,20 @@ def imprimir_datos(self):
                 if isinstance(child, tk.Label):
                     label_text = child.cget("text")  # Obtener el texto del Label
                 elif isinstance(child, tk.Entry):
-                    fila_datos.append(f"{label_text}: {child.get()}")
+                    fila_datos.append(f"{label_text}{child.get()}")
                 elif isinstance(child, ttk.Combobox):
-                    fila_datos.append(f"{label_text}: {child.get()}")
+                    fila_datos.append(f"{label_text}{child.get()}")
                 elif isinstance(child, tk.Checkbutton):
                     estado = "Activado" if self.check_vars[checkbutton_index].get() else "Desactivado"
-                    fila_datos.append(f"{label_text}: {estado}")
+                    fila_datos.append(f"{label_text}{estado}")
                     checkbutton_index += 1  # Incrementar solo cuando se imprime un Checkbutton
 
-            
             if fila_datos:
+                # Añadir punto y coma si no es el primer ingreso
+                if datos:  # Si ya hay datos, añade un punto y coma
+                    datos.append(";")
                 datos.append("\n".join(fila_datos))
-         
-
-
-    # Imprimir los datos en la consola
-    for dato in datos:
-        print(dato)
+            
 
 
     print(datos)

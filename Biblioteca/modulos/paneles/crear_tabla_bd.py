@@ -48,7 +48,7 @@ def nueva_tabla_Base_Datos(self):
     self.cuerpo_campos = tk.Frame(self.panel_cuerpo_tabla, bg=colores.COLOR_PANEL_INFO)
     self.cuerpo_campos.place(relx=0.5, y=120, anchor="n")
     self.sub_cuerpo_campos = tk.Frame(self.cuerpo_campos, bg=colores.COLOR_PANEL_INFO)
-    self.sub_cuerpo_campos.grid(row=0, column=0, columnspan=5, padx=10, pady=5)
+    self.sub_cuerpo_campos.grid(row=0, column=0, columnspan=6)
 
     # Botón para imprimir datos
     self.boton_imprimir = tk.Button(self.panel_cuerpo_tabla, 
@@ -57,27 +57,42 @@ def nueva_tabla_Base_Datos(self):
                                      bg=colores.COLOR_BARRA_SUPERIOR, fg="white", font=("Arial", 12, "bold"))
     self.boton_imprimir.place(relx=0.5, y=500, anchor="center")
 
-    self.chekked = tk.IntVar()
     self.contador_filas = 0
     self.contador_columnas = 0
+    self.check_vars = []  # Lista para almacenar las variables de control
+
+    
 
     self.panel_nueva_tabla.bind("<Configure>", lambda event: ajustar_panel())
     ajustar_panel()
     btn_hover.hover_event(self, self.boton_agregar_campo)
 
 def agregar_campo(self):
+    # Crear una nueva variable para el Checkbutton
+    check_var = tk.IntVar()
+    self.check_vars.append(check_var)  # Agregar a la lista
+
+    # Crear los campos
     crear_campo(self, "Nombre:", tk.Entry)
-    crear_campo(self, "Tipo:", ttk.Combobox, ["INT", "VARCHAR", "TEXT", "DATE"])
-    crear_campo(self, "Predeterminado:", ttk.Combobox, ["NULL", "NOT NULL"])
-    crear_campo(self, "A/I:", tk.Checkbutton, None, variable=self.chekked)
-    crear_campo(self, "Indice:", ttk.Combobox, ["NONE", "PRIMARY KEY", "FOREIGN KEY"])
+    tipo_widget = crear_campo(self, "Tipo:", ttk.Combobox, ["INT", "VARCHAR", "TEXT", "DATE"])
+    longitud_widget = crear_campo(self, "Longitud:", tk.Entry)
+    predeterminado_widget = crear_campo(self, "Predeterminado:", ttk.Combobox, ["NULL", "NOT NULL"])
+    
+    # Crear el Checkbutton
+    ai_widget = crear_campo(self, "A/I:", tk.Checkbutton, None, variable=check_var)
+    
+    # Crear el Combobox para el índice
+    indice_widget = crear_campo(self, "Indice:", ttk.Combobox, ["NONE", "PRIMARY KEY", "FOREIGN KEY"])
+    
+    # Asociar el método para habilitar/deshabilitar
+    check_var.trace_add("write", lambda *args: actualizar_estado_campos(self, check_var, tipo_widget, indice_widget))
 
 def crear_campo(self, label_text, widget_type, values=None, **kwargs):
     frame_campo = tk.Frame(self.sub_cuerpo_campos, bg=colores.COLOR_PANEL_INFO)
     frame_campo.grid(row=self.contador_filas, column=self.contador_columnas, padx=10, pady=5, sticky="w")
     
     self.contador_columnas += 1
-    if self.contador_columnas >= 5:
+    if self.contador_columnas >= 6:
         self.contador_columnas = 0
         self.contador_filas += 1
 
@@ -91,22 +106,40 @@ def crear_campo(self, label_text, widget_type, values=None, **kwargs):
         widget = widget_type(frame_campo, **kwargs, bg=colores.COLOR_PANEL_INFO, fg=colores.COLOR_BARRA_SUPERIOR, font=("Arial", 12, "bold"))
 
     widget.pack(side=tk.BOTTOM)
+    return widget  # Asegúrate de devolver el widget creado
+
+def actualizar_estado_campos(self, check_var, tipo_widget, indice_widget):
+    if check_var.get():  # Si el Checkbutton está activado
+        tipo_widget.set("INT")  # Establecer tipo como INT
+        tipo_widget.configure(state='disabled')  # deshabilitar edición
+        indice_widget.set("PRIMARY KEY")  # Establecer índice como PRIMARY KEY
+        indice_widget.configure(state='disabled')  # deshabilitar edición
+    else:
+        tipo_widget.configure(state='normal')  # Habilitar edición
+        indice_widget.configure(state='normal')  # Habilitar edición
+
 
 def imprimir_datos(self):
     datos = []
-    # Recoger el nombre de la tabla
     nombre_tabla = self.input_nombre_tabla.get()
     datos.append(f"Nombre de la Tabla: {nombre_tabla}")
     
-    # Recoger los datos de los campos
+    checkbutton_index = 0  # Contador para los Checkbuttons
     for widget in self.sub_cuerpo_campos.winfo_children():
-        if isinstance(widget, tk.Entry):
-            datos.append(f"Campo: {widget.get()}")
-        elif isinstance(widget, ttk.Combobox):
-            datos.append(f"Campo: {widget.get()}")
-        elif isinstance(widget, tk.Checkbutton):
-            estado = "Activado" if widget.var.get() else "Desactivado"
-            datos.append(f"Campo A/I: {estado}")
+        if isinstance(widget, tk.Frame):
+            label_text = ""
+            # Buscar el Label en el Frame
+            for child in widget.winfo_children():
+                if isinstance(child, tk.Label):
+                    label_text = child.cget("text")  # Obtener el texto del Label
+                elif isinstance(child, tk.Entry):
+                    datos.append(f"{label_text}: {child.get()}")
+                elif isinstance(child, ttk.Combobox):
+                    datos.append(f"{label_text}: {child.get()}")
+                elif isinstance(child, tk.Checkbutton):
+                    estado = "Activado" if self.check_vars[checkbutton_index].get() else "Desactivado"
+                    datos.append(f"{label_text}: {estado}")
+                    checkbutton_index += 1  # Incrementar solo cuando se imprime un Checkbutton
 
-    # Imprimir los datos en la consola
     print("\n".join(datos))
+

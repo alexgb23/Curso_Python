@@ -239,3 +239,6 @@ class FormMaestro(tk.Tk):
         self.canvas.create_image(0, 0, anchor="nw", image=self.foto_fondo)
         # Mantener la referencia de la imagen
         self.canvas.image = self.foto_fondo
+
+
+        

@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from clases.crear_tabla import Crear
 import config.config as colores
 import util.util_ventana as util_ventana
 import modulos.botones.btn_hover as btn_hover
@@ -127,15 +126,15 @@ def actualizar_estado_campos(self, check_var, tipo_widget, indice_widget):
         indice_widget.set("---")
         indice_widget.configure(state='normal')  # Habilitar edición
 
-
 def imprimir_datos(self):
-    datos = []
+    datos = []  # Lista principal que contendrá las filas de datos
     nombre_tabla = self.input_nombre_tabla.get()
     
     checkbutton_index = 0  # Contador para los Checkbuttons
     for widget in self.sub_cuerpo_campos.winfo_children():
+        datos_encapsulados = []  # Reiniciar en cada iteración
         if isinstance(widget, tk.Frame):
-            fila_datos = []
+            fila_datos = []  # Inicializar fila_datos para cada Frame
             label_text = ""
             # Buscar el Label en el Frame
             for child in widget.winfo_children():
@@ -149,16 +148,14 @@ def imprimir_datos(self):
                     estado = "Activado" if self.check_vars[checkbutton_index].get() else "Desactivado"
                     fila_datos.append(f"{label_text}{estado}")
                     checkbutton_index += 1  # Incrementar solo cuando se imprime un Checkbutton
-
-            if fila_datos:
-                # Añadir punto y coma si no es el primer ingreso
-                if datos:  # Si ya hay datos, añade un punto y coma
-                    datos.append(";")
-                datos.append("\n".join(fila_datos))
             
+            datos_encapsulados.append("\n".join(fila_datos))
 
+        datos.append(datos_encapsulados)  # Agregar como lista
 
-    print(datos)
+    print (datos)
+ 
+ 
     # Instanciar la clase Crear y llamar al método crear_tabla
     # creador = Crear(nombre_tabla)
     # creador.crear_tabla(columnas)
